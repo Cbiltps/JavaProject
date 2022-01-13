@@ -28,6 +28,7 @@ public class NormalUser extends User {
         System.out.println("0.退出系统");
         System.out.println("=======================================");
         Scanner scanner  = new Scanner(System.in);
-        return scanner.nextInt();
+        int choice =  scanner.nextInt();
+        return choice;
     }
 }
