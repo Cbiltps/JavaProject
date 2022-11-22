@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表白墙</title>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        h3 {
+            text-align: center;
+            padding: 30px 0;
+            font-size: 24px;
+        }
+
+        p {
+            text-align: center;
+            color: #999;
+            padding: 10px 0;
+        }
+
+        .row {
+            width: 400px;
+            height: 50px;
+            margin: 0 auto;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .row span {
+            width: 60px;
+            font-size: 20px;
+        }
+
+        .row input {
+            width: 300px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            text-indent: 0.5em;
+            /* 去掉输入框的轮廓线 */
+            outline: none;
+        }
+
+        .row #submit {
+            width: 300px;
+            height: 40px;
+            font-size: 20px;
+            line-height: 40px;
+            margin: 0 auto;
+
+            color: white;
+            background-color: orange;
+            /* 去掉边框 */
+            border: none;
+
+            border-radius: 10px;
+        }
+
+        .row #submit:active {
+            background-color: gray;
+        }
+    </style>
+    <div class="container">
+        <h3>表白墙</h3>
+        <p>输入后点击提交, 会将信息显示在表格中</p>
+        <div class="row">
+            <span>谁: </span>
+            <input type="text">
+        </div>
+        <div class="row">
+            <span>对谁: </span>
+            <input type="text">
+        </div>
+        <div class="row">
+            <span>说: </span>
+            <input type="text">
+        </div>
+        <div class="row">
+            <button id="submit">提交</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        function getMessages() {
+            $.ajax({
+                type: "get",
+                url: "message",
+                success: function(body) {
+                    // 当前 body 对象已经是一个 js 数组了, ajax 会根据响应的 content type 自动进行解析.
+                    // 如果服务器返回的 content-type 已经是 application/json 了, ajax 机会把 body 自动转成 js 的对象
+                    // 如果客户端没有自动转, 也可以通过 JSON.parse() 这个函数来手动转换~~
+
+                    // 依次来取数组中的每个元素
+                    let container = document.querySelector('.container');
+                    // for of 循环是 Es6 中新增的语句，用来替代 for in 和 forEach，它允许你遍历 Arrays（数组）, Strings（字符串）, Maps（映射）, Sets（集合）等可迭代(Iterable data)的数据结构,注意它的兼容性。
+                    for(let message of body) {
+                        let div = document.createElement('div');
+                        div.innerHTML = message.from + ' 对 ' + message.to + ' 说: ' + message.message;
+                        div.className = 'row';
+                        container.appendChild(div);
+                    }
+                }
+            })
+        }
+
+        // 加上函数调用才能使函数生效!
+        getMessages();
+
+        // 当用户点击 submit, 就会获取到 input 中的内容, 从而把内容构造成一个 div, 插入到页面末尾. 
+        let submitBtn = document.querySelector('#submit');
+        submitBtn.onclick = function() {
+            // 1. 获取到 3 个 input 中的内容. 
+            let inputs = document.querySelectorAll('input');
+            let from = inputs[0].value;
+            let to = inputs[1].value;
+            let msg = inputs[2].value;
+            if (from == '' || to == '' || msg == '') {
+                // 用户还没填写完, 暂时先不提交数据. 
+                return;
+            }
+            // 2. 生成一个新的 div, 内容就是 input 里的内容. 把这个新的 div 加到页面中. 
+            let div = document.createElement('div');
+            div.innerHTML = from + ' 对 ' + to + ' 说: ' + msg;
+            div.className = 'row';
+            let container = document.querySelector('.container');
+            container.appendChild(div);
+            // 3. 清空之前输入框的内容. 
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+            // 4.加入 ajax 代码, 此处要加入的逻辑有两个部分:
+            // 点击按钮提交的时候, ajax 要构造数据发给服务器,
+            // 加载页面的时候, 从服务器获取消息列表, 并在界面山直接展示.
+            //
+            // 所以现在要做的是:
+            // 把当前从输入框获取到的内容, 构造成一个 HTTP POST 请求, 通过 ajax 发给服务器.
+            // 首先构造json格式的body对象
+            let body = {
+                from: from,
+                to: to,
+                message: msg
+            };
+
+            $.ajax({
+                type: "post",
+                url: "message",
+                contentType: "application/json; charset=utf8",
+                data: JSON.stringify(body),
+                success: function(body) {
+                    alert("消息提交成功!");
+                },
+                error: function() {
+                    alert("消息提交失败!");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
