@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客编辑页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_edit.css">
+
+    <!-- 引入 editor.md 的依赖 -->
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+</head>
+<body>
+    <!-- 这是导航栏 -->
+    <div class="nav">
+        <img src="image/logo2.jpg" alt="">
+        <span>我的博客系统</span>
+        <!-- 空白元素, 用来占位置 -->
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="#">注销</a>
+    </div>
+    <!-- 包裹整个博客编辑页内容的顶级容器 -->
+    <div class="blog-edit-container">
+        <div class="title">
+            <input type="text" placeholder="在此处输入标题">
+            <button>发布文章</button>
+        </div>
+        <!-- 放置 md 编辑器 -->
+        <div id="editor">
+
+        </div>
+    </div>
+
+    <script>
+        // 初始化编辑器
+        let editor = editormd("editor", {
+            // 这里的尺寸必须在这里设置. 设置样式会被 editormd 自动覆盖掉. 
+            width: "100%",
+            // 设定编辑器高度
+            height: "calc(100% - 50px)",
+            // 编辑器中的初始内容
+            markdown: "# 在这里写下一篇博客",
+            // 指定 editor.md 依赖的插件路径
+            path: "editor.md/lib/"
+        });
+    </script>
+</body>
+</html>
