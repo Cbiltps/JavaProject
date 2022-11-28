@@ -42,14 +42,21 @@ public class BlogDao {
 
         try {
             connection = DBUtil.getConnection();
-            String sql = "select * from blog";
+            // 下面的代码一定要排序, 在数据没有 order by 之前, 不要依赖数据的顺序!!!
+            // mysql并没有规定数据的顺序就是按照插入的顺序定制的!!!
+            String sql = "select * from blog order by postTime desc";
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Blog blog = new Blog();
                 blog.setBlogId(resultSet.getInt("blogId"));
                 blog.setTitle(resultSet.getString("title"));
-                blog.setContent(resultSet.getString("content"));
+                // 这里需要针对内容进行截断(太长了,就需要截断)
+                String content = resultSet.getString("content");
+                if (content.length() > 50) {
+                    content = content.substring(0, 50) + "...";
+                }
+                blog.setContent(content);
                 blog.setUserId(resultSet.getShort("userId"));
                 blog.setPostTime(resultSet.getTimestamp("postTime"));
                 blogs.add(blog);

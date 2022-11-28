@@ -7,6 +7,13 @@
     <title>博客详情页</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/blog_detail.css">
+
+    <!-- 引入 editor.md 的依赖 -->
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
 </head>
 <body>
     <!-- 这是导航栏 -->
@@ -43,102 +50,44 @@
             <!-- 使用这个 div 来包裹整个博客的内容详情 -->
             <div class="blog-content">
                 <!-- 博客标题 -->
-                <h3>我的第一篇博客</h3>
+                <h3></h3>
                 <!-- 博客的时间 -->
-                <div class="date">2022-05-06 19:00:00</div>
-                <!-- 正文 -->
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
-                <p>
-                    从今天开始, 我要认真敲代码. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis veniam dolorem modi, sunt quo rem facere ut dolores inventore ratione nemo provident quae eius adipisci quidem facilis quod. Maxime, nam?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat vel omnis consectetur reprehenderit velit, mollitia perspiciatis porro natus sit iure laudantium rem quas quae. Perferendis mollitia sint aut rerum minima?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis aspernatur corporis autem nisi, aliquid exercitationem perferendis, repellat sequi labore ad expedita itaque quisquam aperiam? Voluptatem numquam cupiditate exercitationem quis earum.
-                </p>
+                <div class="date"></div>
+                <!-- 博客的正文内容 -->
+                <div id="content"></div>
             </div>
         </div>
     </div>
+
+    <script>
+        function getBlogDetail(body) {
+            $.ajax({
+                type: 'get',
+                // location.search 拿到了形如 '?blogId=5' 这样的一段内容
+                url: 'blog' + location.search,
+                // 根据 body 中的内容来构造页面
+                success: function(body) {
+                    // 1. 构造博客标题
+                    let h3 = document.querySelector(".blog-content>h3");
+                    h3.innerHTML = body.title;
+                    // 2. 构造博客发布时间
+                    let dateDiv = document.querySelector('.date');
+                    dateDiv.innerHTML = body.postTime;
+                    // 3. 构造博客正文
+                    // 如果直接把 content 设为 innerHTML, 此时展示在界面上的内容, 是原始的 markdown 字符串
+                    // 咱们需要的是渲染后的, 带有格式的效果
+                    // let contentDiv = document.querySelector('#content');
+                    // contentDiv.innerHTML = body.content;
+                    
+                    // 第一个参数对应 id=content 的 html 标签. 渲染后得到的 html 片段就会被放到这个标签下. 
+                    editormd.markdownToHTML('content', {
+                        markdown: body.content
+                    });
+                }
+            });
+        }
+
+        getBlogDetail();
+    </script>
 </body>
 </html>
