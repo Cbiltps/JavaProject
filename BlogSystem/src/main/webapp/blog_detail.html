@@ -16,6 +16,7 @@
     <script src="editor.md/editormd.js"></script>
 
     <script src="js/common.js"></script>
+    <script>getUserInfo('blog_detail.html');</script>
 </head>
 <body>
     <!-- 这是导航栏 -->
@@ -88,8 +89,25 @@
                 }
             });
         }
-
         getBlogDetail();
+
+        // 从服务器获取当前博客的作者信息, 并显示到页面上
+        function getAuthorInfo() {
+            $.ajax({
+                type: "get",
+                url: "authorInfo" + location.search,
+                success: function(body) {
+                    // 此处的 body 就是服务器返回的 User 对象
+                    if (body.username) {
+                        // 如果响应中的 username 存在, 就把名字显示在左侧的页面上
+                        changeUserName(body.username);
+                    } else {
+                        console.log("获取作者信息失败!" + body.reason);
+                    }
+                }
+            });
+        }
+        getAuthorInfo();
     </script>
 </body>
 </html>

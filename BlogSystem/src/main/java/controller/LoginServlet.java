@@ -14,6 +14,8 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf8");
@@ -47,8 +49,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     // 这个方法用来让前端检测当前的登录状态.
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json; charset=utf8");
@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
             resp.getWriter().write(objectMapper.writeValueAsString(user));
             return;
         }
-        
+
         User user = (User) session.getAttribute("user");
         if (user == null) {
             // 虽然有会话, 但是会话里没有 user 对象, 也视为未登录.

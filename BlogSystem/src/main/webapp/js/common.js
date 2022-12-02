@@ -1,5 +1,5 @@
 // 加上一个逻辑, 通过 GET /login 这个接口来获取下当前的登录状态~
-function getUserInfo() {
+function getUserInfo(pageName) {
     $ .ajax({
         type: "get",
         url: "login",
@@ -8,7 +8,11 @@ function getUserInfo() {
             if (body.userId && body.userId > 0) {
                 // 登录成功!
                 // 不做处理!
-                console.log("当前用户登录成功! 用户名: " + body.username);
+                console.log("当前用户登录成功! 用户名: " + body.username + " 用户ID:" + body.userId);
+                // 根据当前用户登录的情况, 把当前用户名设置到页面上
+                if (pageName == 'blog_list.html') {
+                    changeUserName(body.username);
+                }
             } else {
                 // 登录失败!
                 // 让前端页面, 跳转到 login.html
@@ -23,4 +27,7 @@ function getUserInfo() {
     });
 }
 
-getUserInfo();
+function changeUserName(username) {
+    let h3 = document.querySelector('.card>h3');
+    h3.innerHTML = username;
+}
