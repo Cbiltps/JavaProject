@@ -15,7 +15,7 @@
     justify-content: space-between;
 }
 
-.blog-edit-container .title input {
+.blog-edit-container .title #title {
     width: 895px;
     height: 40px;
     border-radius: 10px;
@@ -28,7 +28,7 @@
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-.blog-edit-container .title button {
+.blog-edit-container .title #submit {
     width: 100px;
     height: 40px;
     border-radius: 10px;
@@ -36,9 +36,10 @@
     background-color: orange;
     border: none;
     outline: none;
+    font-size: 18px;
 }
 
-.blog-edit-container .title button:active {
+.blog-edit-container .title #submit:active {
     background-color: #666;
 }
 

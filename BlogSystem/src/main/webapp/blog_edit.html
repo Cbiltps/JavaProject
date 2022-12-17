@@ -24,18 +24,23 @@
         <div class="spacer"></div>
         <a href="blog_list.html">主页</a>
         <a href="blog_edit.html">写博客</a>
-        <a href="#">注销</a>
+        <a href="logout">注销</a>
     </div>
     <!-- 包裹整个博客编辑页内容的顶级容器 -->
     <div class="blog-edit-container">
-        <div class="title">
-            <input type="text" placeholder="在此处输入标题">
-            <button>发布文章</button>
-        </div>
-        <!-- 放置 md 编辑器 -->
-        <div id="editor">
-
-        </div>
+        <form action="blog" method="post" style="height: 100%">
+            <div class="title">
+                <input type="text" placeholder="在此处输入标题" name="title" id="title">
+                <!-- <button>发布文章</button> -->
+                <input type="submit" value="发布文章" id="submit">
+            </div>
+            <!-- 放置 md 编辑器 -->
+            <div id="editor">
+                <!-- 为了进行 form 的提交, 此处搞一个 textarea 多行编辑框, 借助这个编辑框来实现表单的提交 -->
+                <!-- 可以设置 editor.md, 让编辑器把 markdown 内容也同步的保存到这个隐藏的 textarea 中, 从而可以进行 form 提交 -->
+                <textarea name="content" style="display: none"></textarea>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -48,7 +53,9 @@
             // 编辑器中的初始内容
             markdown: "# 在这里写下一篇博客",
             // 指定 editor.md 依赖的插件路径
-            path: "editor.md/lib/"
+            path: "editor.md/lib/",
+            // 此处要加上一个重要的选项, 然后 editor.md 就会自动把用户在编辑器输入的内容同步保存到 隐藏的 textarea 中了!
+            saveHTMLToTextarea: true
         });
     </script>
 </body>
