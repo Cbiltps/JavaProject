@@ -23,6 +23,6 @@ public class WebSocketConfig implements WebSocketConfigurer { // 注册一些
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) { // 注册一些Handler到框架里面去
         // 注册API实例
-        registry.addHandler(testAPI, "./test"); // 客户端连接到这个路径之后, 就会调用到testAPI, 然后再去调用TestAPI类中的方法
+        registry.addHandler(testAPI, "/test"); // 客户端连接到这个路径之后, 就会调用到testAPI, 然后再去调用TestAPI类中的方法
     }
 }
