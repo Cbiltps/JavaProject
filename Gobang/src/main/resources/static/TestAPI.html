@@ -12,7 +12,7 @@
 
     <script>
         // 创建WebSocket实例
-        let websocket = new websocket("ws://127.0.0.1:8080/test"); // 和后端的代码的路径是匹配的
+        let websocket = new WebSocket("ws://127.0.0.1:8080/test"); // 和后端的代码的路径是匹配的
         // 给实例挂载一些回调函数
         websocket.onopen = function() {
             console.log("连接建立")

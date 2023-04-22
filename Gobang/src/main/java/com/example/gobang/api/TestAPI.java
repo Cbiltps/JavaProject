@@ -23,6 +23,8 @@ public class TestAPI extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception { // 客服端发送文本消息, 这里可以感知消息内容
         System.out.println("收到消息:" + message.getPayload());
+        // 服务器收到信息之后, 返回一个信息
+        session.sendMessage(message);
     }
 
     @Override
