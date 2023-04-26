@@ -10,12 +10,12 @@
     </select>
 
 <!--    <update id="userWin">-->
-<!--        update user set totalCount = totalCount + 1, winCount = winCount + 1, score = score + 30-->
+<!--        update user set totalCount = totalCount+1, winCount = winCount+1, score = score+30-->
 <!--        where userId = #{userId}-->
 <!--    </update>-->
 
 <!--    <update id="userLose">-->
-<!--        update user set totalCount = totalCount + 1, score = score - 30-->
+<!--        update user set totalCount = totalCount+1, score = score-30-->
 <!--        where userId = #{userId}-->
 <!--    </update>-->
 </mapper>

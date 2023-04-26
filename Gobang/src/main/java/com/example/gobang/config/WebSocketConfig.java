@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) { // 注册一些Handler到框架里面去
-        // 注册API实例
-        registry.addHandler(testAPI, "/test").setAllowedOrigins("*");; // 客户端连接到这个路径之后, 就会调用到testAPI, 然后再去调用TestAPI类中的方法
+        // 注册API实例, 经查阅官方文档Spring WebSocket4.1.5版本前默认支持跨域访问, 之后的版本默认不支持跨域(403), 需要设置setAllowedOrigins()
+        registry.addHandler(testAPI, "/test").setAllowedOrigins("*"); // 客户端连接到这个路径之后, 就会调用到testAPI, 然后再去调用TestAPI类中的方法
     }
 }
