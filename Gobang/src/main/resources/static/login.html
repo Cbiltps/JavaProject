@@ -27,7 +27,7 @@
             <!-- 这是另一行 -->
             <div class="row">
                 <span>密码</span>
-                <input type="text" id="password">
+                <input type="password" id="password">
             </div>
             <!-- 提交按钮 -->
             <div class="row">
@@ -40,7 +40,34 @@
     <script>
         let usernameInput = document.querySelector('#username'); // 取到的是input标签
         let passwordInput = document.querySelector('#password');
-        
+        let submitButton = document.querySelector('#submit');
+        submitButton.onclick = function () {
+           $.ajax({
+               type: 'post',
+               url: '/login',
+               data: {
+                   username: usernameInput.value,
+                   password: passwordInput.value
+               },
+               // 请求执行成功之后的回调函数
+               success: function (body) {
+                   // 判定当前是否登录成功~
+                   // 如果登录成功, 服务器会返回当前的 User 对象.
+                   // 如果登录失败, 服务器会返回一个空的 User 对象.
+                   if (body && body.userId > 0) {
+                       alert("登录成功!");
+                       // 重定向跳转到"游戏大厅页面"
+                       location.assign('/game_hall.html');
+                   } else {
+                       alert("登录失败!");
+                   }
+               },
+               // 请求执行失败之后的回调函数
+               error: function () {
+                   alert("登录失败!");
+               }
+           });
+        }
     </script>
 </body>
 </html>
