@@ -1,0 +1,29 @@
+/*公共的样式*/
+
+/*去除浏览器默认样式*/
+* {
+    /*去掉外边距*/
+    margin: 0;
+    /*去掉内边距*/
+    padding: 0;
+    /*通过 box-sizing 为 border-box 就可以阳止盒子被撑大了*/
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /*设置 html 和 body 的高度和浏览器窗口一样高*/
+    background-image: url("../image/background.png");
+    background-repeat: no-repeat; /*设置背景图片是否重复及如何重复, 默认平铺满*/
+    background-position: center center; /*垂直水平居中*/
+    background-size: cover; /*设置背景图片尽可能铺满*/
+}
+
+.nav {
+    height: 50px;
+
+    background-color: rgb(50, 50, 40);
+    color: aliceblue;
+
+    line-height: 50px; /*行高和元素高度一样的时候就是垂直居中*/
+    padding-left: 20px;
+}

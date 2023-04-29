@@ -1,0 +1,68 @@
+.login-container {
+    height: calc(100% - 50px); /*抛去前面导航栏的高度*/
+
+    display: flex; /*开启弹性布局*/
+    justify-content: center; /*水平居中*/
+    align-items: center; /*垂直居中*/
+}
+
+.login-dialog {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 80%);
+    border-radius: 10px; /*设置圆角*/
+}
+
+/*标题样式*/
+.login-dialog h3 {
+    font-size: 30px;
+
+    text-align: center;
+    padding: 35px 0;
+}
+
+/*针对行设置样式*/
+.login-dialog .row {
+    width: 100%;
+    height: 50px;
+
+    display: flex; /*开启弹性布局*/
+    justify-content: center; /*水平居中*/
+    align-items: center; /*垂直居中*/
+}
+
+.login-dialog .row span {
+    width: 100px;
+    font-weight: 700; /*注意这里数值后面没有单位*/
+}
+
+#username, #password {
+    width: 200px;
+    height: 40px;
+
+    font-size: 20px;
+    line-height: 40px;
+    padding-left: 10px;
+    border: none; /*去掉边框*/
+    outline: none; /*去掉轮廓线*/
+    border-radius: 10px; /*设置圆角*/
+}
+
+#submit {
+    height: 50px;
+    width: 300px;
+
+    background-color: rgb(0, 128, 0);
+    color: aliceblue;
+
+    border: none; /*去掉边框*/
+    outline: none; /*去掉轮廓线*/
+    border-radius: 10px; /*设置圆角*/
+
+    margin-top: 20px; /*距离上方有20px*/
+}
+
+/*点击按钮的反馈效果-伪类选择器实现*/
+#submit:active {
+    background-color: #666;
+}
