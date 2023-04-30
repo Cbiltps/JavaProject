@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <title>注册</title>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        五子棋对战
+    </div>
+    <div class="login-container">
+        <!-- 登录页面的对话框 -->
+        <div class="login-dialog">
+            <!-- 提示信息 -->
+            <h3>注册</h3>
+            <!-- 这是一行 -->
+            <div class="row">
+                <span>用户名</span>
+                <input type="text" id="username">
+            </div>
+            <!-- 这是另一行 -->
+            <div class="row">
+                <span>密码</span>
+                <input type="password" id="password">
+            </div>
+            <!-- 提交按钮 -->
+            <div class="row">
+                <button id="submit">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script>
+        let usernameInput = document.querySelector('#username');
+        let passwordInput = document.querySelector('#password');
+        let submitButton = document.querySelector('#submit');
+        submitButton.onclick = function () {
+            $.ajax({
+                type: 'post',
+                url: '/register',
+                data: {
+                    username: usernameInput.value,
+                    password: passwordInput.value
+                },
+                // 请求执行成功之后的回调函数
+                success: function (body) {
+                    // 如果注册成功, 就会返回一个新注册好的用户对象
+                    if (body && body.username) {
+                        alert("注册成功!");
+                        location.assign('/login.html');
+                    } else {
+                        alert("注册失败!");
+                    }
+                },
+                // 请求执行失败之后的回调函数
+                error: function () {
+                    alert("注册失败!");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

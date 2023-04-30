@@ -27,7 +27,7 @@ public class UserAPI {
     public Object login(String username, String password, HttpServletRequest request) {
         // 关键操作: 就是根据username去数据库中进行查询, 如果能找到匹配的用户并且密码一致, 登录成功.
         User user = userMapper.selectByName(username);
-        System.out.println("[login] : " + user.getUsername());
+        System.out.println("[login] : " + username);
         if (user == null || !user.getPassword().equals(password)) {
             System.out.println("登录失败!");
             return new User();
