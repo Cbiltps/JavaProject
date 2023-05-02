@@ -1,0 +1,39 @@
+.container {
+    width: 100%;
+    height: calc(100% - 50px); /*抛去前面导航栏的高度*/
+
+    display: flex; /*开启弹性布局*/
+    justify-content: center; /*水平居中*/
+    align-items: center; /*垂直居中*/
+}
+
+#screen {
+    width: 400px;
+    height: 200px;
+    font-size: 20px;
+    background-color: rgba(202, 202, 202, 0.8);
+    color: aliceblue;
+
+    text-align: center;
+    line-height: 100px; /* 注意这里不是200px, 当文本只有一行的时候可以是200px, 但是这里有2行文本, 设置垂直居中就是100px */
+    border-radius: 10px;
+}
+
+#match-button {
+    width: 400px;
+    height: 50px;
+    font-size: 20px;
+    color: aliceblue;
+    background-color: orange;
+
+    border: none; /*去掉边框*/
+    outline: none; /*去掉轮廓线*/
+    border-radius: 10px;
+    text-align: center;
+    line-height: 50px;
+    margin-top: 15px;
+}
+
+#match-button:active {
+    background-color: gray;
+}
