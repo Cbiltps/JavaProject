@@ -118,13 +118,15 @@ public class MatchAPI extends TextWebSocketHandler {
             // 退出匹配队列
             matcher.removeFromMatchQueue(user);
             // 移除完成之后, 返回一个响应给前端
-            response.setOk(false);
+            response.setOk(true);
             response.setMessage("stopMatch");
         } else {
             // 非法请求
             response.setOk(false);
             response.setMessage("非法匹配请求!");
         }
+        String respJson = objectMapper.writeValueAsString(response);
+        session.sendMessage(new TextMessage(respJson));
     }
 
     /**

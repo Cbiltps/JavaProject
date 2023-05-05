@@ -28,6 +28,9 @@ public class Matcher {
     @Autowired
     private OnlineUserManager onlineUserManager;
 
+    @Autowired
+    private RoomManager roomManager;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public Matcher() {
@@ -117,7 +120,9 @@ public class Matcher {
                     return;
                 }
 
-                // TODO 4. 把这两个玩家放到一个游戏房间中.
+                // 4. 把这两个玩家放到一个游戏房间中.
+                Room room = new Room();
+                roomManager.addRoom(room, player1.getUserId(), player2.getUserId());
 
                 // 5. 给玩家反馈信息: 你匹配到对手了~
                 // 通过 WebSocket 返回一个 message 为 'matchSuccess' 这样的响应
@@ -149,19 +154,19 @@ public class Matcher {
                 normalQueue.offer(user);
                 normalQueue.notify(); // 有新玩家加入的时候通知, 然后进行后续的唤醒并尝试获取锁
             }
-            System.out.println("玩家 " + user.getUsername() + "进入 normalQueue 中!");
+            System.out.println("玩家 " + user.getUsername() + " 进入 normalQueue 中!");
         } else if (user.getScore() >= 2000 && user.getScore() < 3000) {
             synchronized (highQueue) {
                 highQueue.offer(user);
                 highQueue.notify(); // 有新玩家加入的时候通知, 然后进行后续的唤醒并尝试获取锁
             }
-            System.out.println("玩家 " + user.getUsername() + "进入 highQueue 中!");
+            System.out.println("玩家 " + user.getUsername() + " 进入 highQueue 中!");
         } else {
             synchronized (proQueue) {
                 proQueue.offer(user);
                 proQueue.notify(); // 有新玩家加入的时候通知, 然后进行后续的唤醒并尝试获取锁
             }
-            System.out.println("玩家 " + user.getUsername() + "进入 proQueue 中!");
+            System.out.println("玩家 " + user.getUsername() + " 进入 proQueue 中!");
         }
     }
 
@@ -174,17 +179,17 @@ public class Matcher {
             synchronized (normalQueue) {
                 normalQueue.remove(user);
             }
-            System.out.println("玩家 " + user.getUsername() + "从 normalQueue 中退出!");
+            System.out.println("玩家 " + user.getUsername() + " 从 normalQueue 中退出!");
         } else if (user.getScore() >= 2000 && user.getScore() < 3000) {
             synchronized (highQueue) {
                 highQueue.remove(user);
             }
-            System.out.println("玩家 " + user.getUsername() + "从 highQueue 中退出!");
+            System.out.println("玩家 " + user.getUsername() + " 从 highQueue 中退出!");
         } else {
             synchronized (proQueue) {
                 proQueue.remove(user);
             }
-            System.out.println("玩家 " + user.getUsername() + "从 proQueue 中退出!");
+            System.out.println("玩家 " + user.getUsername() + " 从 proQueue 中退出!");
         }
     }
 }
