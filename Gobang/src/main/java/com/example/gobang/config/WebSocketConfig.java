@@ -19,6 +19,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @Configuration // Spring中常用的注解
 @EnableWebSocket // 表示配置WebSocket类, 开启WebSocket的关键所在
 public class WebSocketConfig implements WebSocketConfigurer {
+
     @Autowired
     private TestAPI testAPI;
 
@@ -39,7 +40,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
                  * 用户登录就会给 HttpSession 中保存用户的信息~~
                  * 在注册 WebSocketAPl 的时候, 就常要把前面准备好的 HttpSession 给搞过来(搞到WebSocket的Session中)
                  */
-                .addInterceptors(new HttpSessionHandshakeInterceptor());
-//                .setAllowedOrigins("*");
+                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .setAllowedOrigins("*");
     }
 }

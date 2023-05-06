@@ -87,11 +87,11 @@ public class Matcher {
                 // 2. 从队里中取出两个玩家
                 User player1 = matchQueue.poll();
                 User player2 = matchQueue.poll();
-                System.out.println("匹配出两个玩家: " + player1.getUsername() + ", " + player2.getUsername());
+                System.out.println("匹配出两个玩家: [" + player1.getUsername() + "] [" + player2.getUsername() + "]");
 
                 // 3. 获取玩家的 WebSocketSession, 目的是告诉玩家匹配成功
                 WebSocketSession session1 = onlineUserManager.getStatus(player1.getUserId());
-                WebSocketSession session2 = onlineUserManager.getStatus(player1.getUserId());
+                WebSocketSession session2 = onlineUserManager.getStatus(player2.getUserId());
                 /**
                  * 理论上来说, 匹配队列中的玩家一定是在线的状态
                  * 因为前面的逻辑里进行了处理, 当玩家断开连接的时候就把玩家从匹配队列中移除了
