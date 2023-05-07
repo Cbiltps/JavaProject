@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>游戏房间</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/game_room.css">
+</head>
+<body>
+    <div class="nav">五子棋对战</div>
+    <!-- 整个页面的容器 -->
+    <div class="container">
+        <!-- 这个 div 在 container 是处于垂直水平居中的 -->
+        <div>
+            <!-- 棋盘区域, 基于 canvas 实现 -->
+            <canvas id="chess" width="450px" height="450px">
+
+            </canvas>
+            <!-- 显示区域 -->
+            <div id="screen">
+                等待玩家连接中...
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -45,6 +45,8 @@
 
         webSocket.onclose = function () {
             console.log("onclose");
+            alert("和服务器断开连接, 请重新登陆!")
+            location.assign("/login.html")
         }
 
         webSocket.onerror = function () {

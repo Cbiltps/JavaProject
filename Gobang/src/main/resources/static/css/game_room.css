@@ -1,0 +1,9 @@
+#screen {
+    width: 450px;
+    height: 50px;
+    margin-top: 10px;
+    background-color: aliceblue;
+    font-size: 22px;
+    text-align: center;
+    line-height: 50px;
+}

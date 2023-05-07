@@ -27,3 +27,12 @@ html, body {
     line-height: 50px; /*行高和元素高度一样的时候就是垂直居中*/
     padding-left: 20px;
 }
+
+.container {
+    width: 100%;
+    height: calc(100% - 50px); /*抛去前面导航栏的高度*/
+
+    display: flex; /*开启弹性布局*/
+    justify-content: center; /*水平居中*/
+    align-items: center; /*垂直居中*/
+}
