@@ -26,7 +26,12 @@ public class OnlineUserManager {
      */
 
     // 回去学习一下ConcurrentHashMap, 老师讲的比较模糊!
+
+    // 表示当前用户在游戏大厅的在线转态
     private ConcurrentHashMap<Integer, WebSocketSession> onlineStatus = new ConcurrentHashMap<>();
+
+    // 表示当前用户在游戏房间的在线转态
+    private ConcurrentHashMap<Integer, WebSocketSession> onlineStatusForGameRoom = new ConcurrentHashMap<>();
 
     /**
      * 进入游戏大厅的状态: 在线
@@ -52,5 +57,17 @@ public class OnlineUserManager {
      */
     public WebSocketSession getStatus(int userId) {
         return onlineStatus.get(userId);
+    }
+
+    public void enterGameRoom(int userId, WebSocketSession webSocketSession) {
+        onlineStatusForGameRoom.put(userId, webSocketSession);
+    }
+
+    public void exitGameRoom(int userId) {
+        onlineStatusForGameRoom.remove(userId);
+    }
+
+    public WebSocketSession getSessionStatusFromGameRoom(int userId) {
+        return  onlineStatusForGameRoom.get(userId);
     }
 }

@@ -62,7 +62,8 @@ public class MatchAPI extends TextWebSocketHandler {
 
             // 2. 先判定当前用户是否已经登录过(已经是在线状态), 如果是已经在线就不该继续进行后续逻辑
             WebSocketSession getWebSocketSession = onlineUserManager.getStatus(user.getUserId());
-            if (getWebSocketSession != null) {
+            if (onlineUserManager.getStatus(user.getUserId()) != null
+                    || onlineUserManager.getSessionStatusFromGameRoom(user.getUserId()) != null) {
                 // 当前用户已经登录了, 针对这个情况要告知客户端, 你这里重复登录了
                 MatchResponse repeatLoginResponse = new MatchResponse();
                 repeatLoginResponse.setOk(false);

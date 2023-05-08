@@ -1,14 +1,12 @@
+// 初始化信息对象
 let gameInfo = {
     roomId: null,
     thisUserId: null,
     thatUserId: null,
-    isWhite: true,
+    isWhite: true
 }
 
-//////////////////////////////////////////////////
 // 设定界面显示相关操作
-//////////////////////////////////////////////////
-
 function setScreenText(me) {
     let screen = document.querySelector('#screen');
     if (me) {
@@ -18,10 +16,51 @@ function setScreenText(me) {
     }
 }
 
-//////////////////////////////////////////////////
-// 初始化 websocket
-//////////////////////////////////////////////////
-// TODO
+// 初始化 websocket(此处的路径写作 /game, 不要写作 /game/ )
+let websocket = new WebSocket("ws://127.0.0.1:8080/game");
+websocket.onopen = function () {
+    console.log("连接有房间成功!");
+}
+
+websocket.close = function () {
+    console.log("和游戏服务器断开连接!");
+}
+
+websocket.onerror = function () {
+    console.log("和游戏服务器的连接出现异常!")
+}
+
+websocket.onbeforeunload = function () {
+    websocket.close();
+}
+
+// 处理服务器建立连接返回的数据响应
+websocket.onmessage = function (event) {
+    console.log("[handlerGameReady]" + event.data);
+    let resp = JSON.parse(event.data);
+    if (resp.message != 'gameReady') {
+        console.log("响应类型错误!");
+        return;
+    }
+
+    if (!resp.ok) {
+        alert("连接游戏失败! reason: " + resp.reason);
+        // 连接游戏失败, 返回游戏大厅
+        location.assign("/game_hall.html");
+        return;
+    }
+
+    // 得到的是正确的响应, 响应数据赋值给 gameInfo 对象
+    gameInfo.roomId = resp.roomId;
+    gameInfo.thatUserId = resp.thatUserId;
+    gameInfo.thisUserId = resp.thisUserId;
+    gameInfo.isWhite = resp.isWhite;
+
+    // 初始化棋盘
+    initGame();
+    // 设置显示区域的内容
+    setScreenText(gameInfo.isWhite);
+}
 
 //////////////////////////////////////////////////
 // 初始化一局游戏
@@ -100,4 +139,3 @@ function initGame() {
     }
 }
 
-initGame();

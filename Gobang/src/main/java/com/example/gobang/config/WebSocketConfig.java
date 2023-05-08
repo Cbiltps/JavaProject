@@ -1,5 +1,6 @@
 package com.example.gobang.config;
 
+import com.example.gobang.api.GameAPI;
 import com.example.gobang.api.TestAPI;
 import com.example.gobang.api.MatchAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     private MatchAPI matchAPI;
 
+    @Autowired
+    private GameAPI gameAPI;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) { // 注册一些Handler到框架里面去
         registry.addHandler(testAPI, "/test") // 客户端连接到这个路径之后, 就会调用到testAPI, 然后再去调用TestAPI类中的方法
@@ -40,6 +44,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
                  * 用户登录就会给 HttpSession 中保存用户的信息~~
                  * 在注册 WebSocketAPl 的时候, 就常要把前面准备好的 HttpSession 给搞过来(搞到WebSocket的Session中)
                  */
+                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .setAllowedOrigins("*");
+
+        registry.addHandler(gameAPI, "/game")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
                 .setAllowedOrigins("*");
     }
