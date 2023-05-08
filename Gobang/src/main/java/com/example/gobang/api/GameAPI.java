@@ -66,7 +66,8 @@ public class GameAPI extends TextWebSocketHandler {
         // 4. 设置玩家上线
         onlineUserManager.enterGameRoom(user.getUserId(), session);
 
-        // TODO 玩家加入房间之后, 给前端返回WebSocket响应数据
+        // 5. 把两个游戏玩家加入到游戏房间中
+
      }
 
     @Override
@@ -76,7 +77,22 @@ public class GameAPI extends TextWebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        User user = (User) session.getAttributes().get("user");
+        if (user == null) {
+            // 此处简单处理, 断开连接的时候就不给客户端返回响应了
+            return;
+        }
 
+        // 查看用户的在线转态, 如果在线就设为离线
+        WebSocketSession exitSession = onlineUserManager.getSessionStatusFromGameRoom(user.getUserId());
+        /**
+         * 判定多开的时候(已经是上线状态), 需要 关闭 第二个session的时候会触发此方法并且误删第一个session,
+         * 所以, 只有判断两个session一样(只有一个session)的时候才会执行 onlineUserManager.exitGameRoom(user.getUserId()); 方法!
+         */
+        if (session == exitSession) {
+            onlineUserManager.exitGameRoom(user.getUserId());
+        }
+        System.out.println("当前用户 " + user.getUsername() + "游戏房间连接异常!");
     }
 
     @Override
@@ -89,8 +105,13 @@ public class GameAPI extends TextWebSocketHandler {
 
         // 查看用户的在线转态, 如果在线就设为离线
         WebSocketSession exitSession = onlineUserManager.getSessionStatusFromGameRoom(user.getUserId());
+        /**
+         * 判定多开的时候(已经是上线状态), 需要 关闭 第二个session的时候会触发此方法并且误删第一个session,
+         * 所以, 只有判断两个session一样(只有一个session)的时候才会执行 onlineUserManager.exitGameRoom(user.getUserId()); 方法!
+         */
         if (session == exitSession) {
-
+            onlineUserManager.exitGameRoom(user.getUserId());
         }
+        System.out.println("当前用户 " + user.getUsername() + "离开游戏房间!");
     }
 }
