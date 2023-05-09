@@ -20,6 +20,8 @@ public class Room {
     private User player1;
     private User player2;
 
+    private int whiteUser; // 先手玩家的玩家id
+
     public Room() {
         // 构造 Room 的时候生成一个唯一的字符串表示房间 id, 使用 UUID 来作为房间 id~~
         roomId = UUID.randomUUID().toString();
