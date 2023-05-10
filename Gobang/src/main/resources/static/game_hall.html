@@ -45,8 +45,6 @@
 
         webSocket.onclose = function () {
             console.log("onclose");
-            alert("和服务器断开连接, 请重新登陆!")
-            location.assign("/login.html")
         }
 
         webSocket.onerror = function () {
@@ -78,7 +76,11 @@
             } else if (resp.message == 'matchSuccess') {
                 // 匹配到对手
                 console.log("匹配到对手, 进入游戏房间!");
-                location.assign('/game_room.html');
+                alert("即将进入游戏房间!");
+                location.assign("/game_room.html");
+            } else if (resp.message == 'repeatConnection') {
+                alert("检测到多开, 请用其他的账号登录!")
+                location.assign("/login.html");
             } else {
                 console.log("接收到了非法响应! message: " + resp.reason);
             }

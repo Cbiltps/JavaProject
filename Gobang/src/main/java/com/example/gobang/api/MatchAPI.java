@@ -66,11 +66,13 @@ public class MatchAPI extends TextWebSocketHandler {
                     || onlineUserManager.getSessionStatusFromGameRoom(user.getUserId()) != null) {
                 // 当前用户已经登录了, 针对这个情况要告知客户端, 你这里重复登录了
                 MatchResponse repeatLoginResponse = new MatchResponse();
-                repeatLoginResponse.setOk(false);
+                repeatLoginResponse.setOk(true);
                 repeatLoginResponse.setReason("禁止多开!");
+                repeatLoginResponse.setMessage("repeatConnection");
                 // TextMessage 对应一个文本格式的 WebSocket 数据包
                 getWebSocketSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(repeatLoginResponse)));
-                getWebSocketSession.close();
+                // 此处直接关闭有些太激进了, 还是返回一个特殊的 message , 供客户端来进行判定, 由客户端负责进行处理
+//                getWebSocketSession.close();
                 return;
             }
 

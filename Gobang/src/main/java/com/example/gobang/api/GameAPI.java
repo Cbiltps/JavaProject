@@ -5,7 +5,6 @@ import com.example.gobang.game.OnlineUserManager;
 import com.example.gobang.game.Room;
 import com.example.gobang.game.RoomManager;
 import com.example.gobang.model.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,8 +59,9 @@ public class GameAPI extends TextWebSocketHandler {
         if (onlineUserManager.getStatus(user.getUserId()) != null
                 || onlineUserManager.getSessionStatusFromGameRoom(user.getUserId()) != null) {
             // 不仅仅是一个用户在游戏大厅算多开; 一个在游戏大厅, 一个在游戏房间也算多开
-            response.setOk(false);
+            response.setOk(true);
             response.setReason("禁止多开!");
+            response.setMessage("repeatConnection");
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
             return;
         }
@@ -78,23 +78,25 @@ public class GameAPI extends TextWebSocketHandler {
          * 匹配到对手之后经过页面跳转, 来到 game_room.html 才算正式进入游戏房间, 才算玩家准备就绪!\
          * 换句话说, 执行当前逻辑就算页面跳转成功了!
          */
-        if (room.getPlayer1() == null) {
-            // 玩家1还未加入房间, 就把当前连上 WebSocket 的玩家作为 玩家1 加入房间
-            room.setPlayer1(user);
-            // 先连入房间的玩家就是先手方(也可以设置随机数, 比较灵活)
-            room.setWhiteUser(user.getUserId());
-            System.out.println("玩家1 " + user.getUsername() + " 准备就绪!");
-            return;
-        }
+        synchronized (room) {
+            if (room.getPlayer1() == null) {
+                // 玩家1还未加入房间, 就把当前连上 WebSocket 的玩家作为 玩家1 加入房间
+                room.setPlayer1(user);
+                // 先连入房间的玩家就是先手方(也可以设置随机数, 比较灵活)
+                room.setWhiteUser(user.getUserId());
+                System.out.println("玩家1 " + user.getUsername() + " 准备就绪!");
+                return;
+            }
 
-        if (room.getPlayer2() == null) {
-            // 玩家1加入房间, 玩家2还未加入房间, 就把当前连上 WebSocket 的玩家作为 玩家2 加入房间
-            room.setPlayer2(user);
-            System.out.println("玩家2 " + user.getUsername() + " 准备就绪!");
-            // 两个玩家都加入成功之后, 就给两个玩家返回 WebSocket 响应, 通知双方都已经准备完毕
-            noticeGameReady(room, room.getPlayer1(), room.getPlayer2()); // 给玩家1通知
-            noticeGameReady(room, room.getPlayer2(), room.getPlayer1()); // 给玩家2通知
-            return;
+            if (room.getPlayer2() == null) {
+                // 玩家1加入房间, 玩家2还未加入房间, 就把当前连上 WebSocket 的玩家作为 玩家2 加入房间
+                room.setPlayer2(user);
+                System.out.println("玩家2 " + user.getUsername() + " 准备就绪!");
+                // 两个玩家都加入成功之后, 就给两个玩家返回 WebSocket 响应, 通知双方都已经准备完毕
+                noticeGameReady(room, room.getPlayer1(), room.getPlayer2()); // 给玩家1通知
+                noticeGameReady(room, room.getPlayer2(), room.getPlayer1()); // 给玩家2通知
+                return;
+            }
         }
 
         // 6. 如果有新的玩家尝试连接同一个房间, 给出提示报错(一般不会出现, 为了程序的健壮性还是做一个判定和提示)
@@ -120,7 +122,16 @@ public class GameAPI extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
+        // 1. 先从 session 里拿到当前用户的身份信息
+        User user = (User) session.getAttributes().get("user");
+        if (user == null) {
+            System.out.println("[handleTextMessage]: 当前玩家尚未登录!");
+            return;
+        }
+        // 2. 根据玩家 id 获取到房间对象
+        Room room = roomManager.getRoomByPlayer(user.getUserId());
+        // 3. 通过 room 对象来处理这次具体的请求
+        room.putChess(message.getPayload());
     }
 
     @Override
