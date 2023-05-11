@@ -81,8 +81,9 @@ public class MatchAPI extends TextWebSocketHandler {
             System.out.println("玩家 " + user.getUsername() + " 进入游戏大厅!");
 
         } catch (NullPointerException e) {
+//            e.printStackTrace();
+            System.out.println("[MatchAPI.afterConnectionEstablished] 当前用户未登录!");
 
-            e.printStackTrace();
 
             /**
              * 4. 出现空指针异常, 说明玩家身份信息是空的, 表示用户没有登录,
@@ -149,11 +150,12 @@ public class MatchAPI extends TextWebSocketHandler {
             // 玩家在匹配的时候 WebSocket 连接异常断开了, 就把玩家从匹配队列移除
             matcher.removeFromMatchQueue(user);
         } catch (NullPointerException e) {
-            e.printStackTrace();
-            MatchResponse response = new MatchResponse();
-            response.setOk(false);
-            response.setReason("您尚未登录, 不能进行后续的匹配功能!");
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+            System.out.println("[MatchAPI.handleTransportError] 当前用户未登录!");
+//            e.printStackTrace();
+//            MatchResponse response = new MatchResponse();
+//            response.setOk(false);
+//            response.setReason("您尚未登录, 不能进行后续的匹配功能!");
+//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
         }
     }
 
@@ -178,11 +180,12 @@ public class MatchAPI extends TextWebSocketHandler {
             // 玩家在匹配的时候 WebSocket 连接断开了, 就把玩家从匹配队列移除
             matcher.removeFromMatchQueue(user);
         } catch (NullPointerException e) {
-            e.printStackTrace();
-            MatchResponse response = new MatchResponse();
-            response.setOk(false);
-            response.setReason("出现登录异常, 不能进行后续的匹配功能!");
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
+            System.out.println("[MatchAPI.afterConnectionClosed] 当前用户未登录!");
+//            e.printStackTrace();
+//            MatchResponse response = new MatchResponse();
+//            response.setOk(false);
+//            response.setReason("出现登录异常, 不能进行后续的匹配功能!");
+//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
         }
         User user = (User) session.getAttributes().get("user");
         onlineUserManager.exitGameHall(user.getUserId());

@@ -23,11 +23,11 @@ websocket.onopen = function () {
 }
 
 websocket.close = function () {
-    console.log("和游戏服务器断开连接!");
+    console.log("游戏服务器断开连接!");
 }
 
 websocket.onerror = function () {
-    console.log("和游戏服务器的连接出现异常!")
+    console.log("游戏服务器的连接出现异常!")
 }
 
 websocket.onbeforeunload = function () {
@@ -120,10 +120,10 @@ function initGame() {
             // 先判定当前这个响应是自己落的子, 还是对方落的子
             if (resp.userId == gameInfo.thisUserId) {
                 // 自己落子: 根据我自己棋子的颜色, 来绘制一个棋子
-                oneStep(resp.row, resp.col, gameInfo.isWhite);
+                oneStep(resp.col, resp.row, gameInfo.isWhite);
             } else if (resp.userId == gameInfo.thatUserId) {
                 // 对手落子: 根据我对手棋子的颜色, 来绘制一个棋子
-                oneStep(resp.row, resp.col, !gameInfo.isWhite);
+                oneStep(resp.col, resp.row, !gameInfo.isWhite);
             } else {
                 // 响应的 userId 错误!
                 console.log('[handlerPutChess] 响应的 userId 错误!');
@@ -136,15 +136,28 @@ function initGame() {
             // 交换双方的落子轮次
             me = !me;
             setScreenText(me);
+
+            // 判定游戏是否结束
+            if (resp.winner != 0) {
+                if (resp.winner == gameInfo.thisUserId) {
+                    alert('你赢了');
+                } else if (resp.winner == gameInfo.thatUserId) {
+                    alert('你输了');
+                } else {
+                    alert("[winner]字段错误: " + resp.winner)
+                }
+                // 回到游戏大厅
+                location.assign('/game_hall.html');
+            }
         }
     }
 
     // 绘制一个棋子, me 为 true
-    function oneStep(j, i, isWhite) {
+    function oneStep(i, j, isWhite) {
         context.beginPath();
-        context.arc(15 + j * 30, 15 + i * 30, 13, 0, 2 * Math.PI);
+        context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI);
         context.closePath();
-        let gradient = context.createRadialGradient(15 + j * 30 + 2, 15 + i * 30 - 2, 13, 15 + j * 30 + 2, 15 + i * 30 - 2, 0);
+        var gradient = context.createRadialGradient(15 + i * 30 + 2, 15 + j * 30 - 2, 13, 15 + i * 30 + 2, 15 + j * 30 - 2, 0);
         if (!isWhite) {
             gradient.addColorStop(0, "#0A0A0A");
             gradient.addColorStop(1, "#636766");
