@@ -9,13 +9,13 @@
         select * from user where username = #{username};
     </select>
 
-<!--    <update id="userWin">-->
-<!--        update user set totalCount = totalCount+1, winCount = winCount+1, score = score+30-->
-<!--        where userId = #{userId}-->
-<!--    </update>-->
+    <update id="userWin">
+        update user set totalCount = totalCount+1, winCount = winCount+1, score = score+30
+        where userId = #{userId};
+    </update>
 
-<!--    <update id="userLose">-->
-<!--        update user set totalCount = totalCount+1, score = score-30-->
-<!--        where userId = #{userId}-->
-<!--    </update>-->
+    <update id="userLose">
+        update user set totalCount = totalCount+1, score = score-30
+        where userId = #{userId};
+    </update>
 </mapper>

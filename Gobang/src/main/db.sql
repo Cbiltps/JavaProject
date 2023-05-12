@@ -1,4 +1,4 @@
-create database if not exists gobang;
+create database if not exists gobang charset utf8mb4;
 
 use gobang;
 

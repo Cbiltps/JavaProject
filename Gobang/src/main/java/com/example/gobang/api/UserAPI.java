@@ -2,6 +2,7 @@ package com.example.gobang.api;
 
 import com.example.gobang.model.User;
 import com.example.gobang.model.UserMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,11 +54,12 @@ public class UserAPI {
 
     @GetMapping("/userinfo")
     public Object getUserInfo(HttpServletRequest request) {
-        // 可以不用在数据库里查, 直接查会话信息就可以
+        // 在数据库中查找最新的数据
         try {
             HttpSession httpSession = request.getSession(false);
             User user = (User) httpSession.getAttribute("user"); // 默认是Object类型
-            return user;
+            User newUser = userMapper.selectByName(user.getUsername());
+            return newUser;
         } catch (NullPointerException e) {
             return new User();
         }

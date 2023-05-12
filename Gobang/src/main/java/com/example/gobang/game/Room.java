@@ -2,6 +2,7 @@ package com.example.gobang.game;
 
 import com.example.gobang.GobangApplication;
 import com.example.gobang.model.User;
+import com.example.gobang.model.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.web.socket.TextMessage;
@@ -13,6 +14,7 @@ import java.util.UUID;
 /**
  * Created with IntelliJ IDEA.
  * Description: 表示一个游戏房间
+ *     因为不止一个房间, 所以不是单例的(不能使用 @Component 注解)!
  * User: cbiltps
  * Date: 2023-05-05
  * Time: 10:24
@@ -42,13 +44,16 @@ public class Room {
 
     private RoomManager roomManager;
 
+    private UserMapper userMapper;
+
     public Room() {
         // 构造 Room 的时候生成一个唯一的字符串表示房间 id, 使用 UUID 来作为房间 id~~
         roomId = UUID.randomUUID().toString();
 
-        // 通过入口类中记录的 context 来手动获取前面的 RoomManger 和 OnlineUserManger
+        // 通过入口类中记录的 context 来手动获取前面的 RoomManger / OnlineUserManger / UserMapper 对象!
         onlineUserManager = GobangApplication.context.getBean(OnlineUserManager.class);
         roomManager = GobangApplication.context.getBean(RoomManager.class);
+        userMapper = GobangApplication.context.getBean(UserMapper.class);
     }
 
     /**
@@ -105,14 +110,19 @@ public class Room {
         session2.sendMessage(new TextMessage(respJsonStr));
 
 
-        // 5. 如果当前胜负已分, 此时这个房间就失去存在的意义了, 就可以直接销毁房间(把房间从房间管理器中给移除)
+        /**
+         * 5. 如果当前胜负已分, 更新获胜方和失败方的信息(数据库),
+         * 并且, 此时这个房间就失去存在的意义了, 就可以直接销毁房间(把房间从房间管理器中给移除)!
+         */
         if (response.getWinner() != 0) {
             // 胜负已分
             System.out.println("游戏结束~房间即将销毁~ roomId=" + roomId + " 获胜方为: " + response.getWinner());
 
-            // TODO 更新获胜方和失败方的信息
-
-
+            // 更新获胜方和失败方的信息
+            int winUserId = response.getWinner();
+            int loseUserId = response.getWinner() == player1.getUserId() ? player2.getUserId() : player1.getUserId();
+            userMapper.userWin(winUserId);
+            userMapper.userLose(loseUserId);
             // 销毁房间
             roomManager.removeRoom(roomId, player1.getUserId(), player2.getUserId());
         }
@@ -120,7 +130,7 @@ public class Room {
 
     private int checkWinner(int row, int col, int chess) {
         // 1. 检查所有的行(先遍历五种情况)
-        for (int c = col-4; c <= col; c++) {
+        for (int c = col - 4; c <= col; c++) {
             // 判定五个子是否连在一起(颜色也是一致的)
             try {
                 if (board[row][c] == chess
@@ -136,6 +146,53 @@ public class Room {
                 continue;
             }
         }
+
+        // 2. 检查所有列
+        for (int r = row - 4; r <= row; r++) {
+            try {
+                if (board[r][col] == chess
+                        && board[r + 1][col] == chess
+                        && board[r + 2][col] == chess
+                        && board[r + 3][col] == chess
+                        && board[r + 4][col] == chess) {
+                    return chess == 1 ? player1.getUserId() : player2.getUserId();
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                continue;
+            }
+        }
+
+        // 3. 检查左对角线
+        for (int r = row - 4, c = col - 4; r <= row && c <= col; r++, c++) {
+            try {
+                if (board[r][c] == chess
+                        && board[r + 1][c + 1] == chess
+                        && board[r + 2][c + 2] == chess
+                        && board[r + 3][c + 3] == chess
+                        && board[r + 4][c + 4] == chess) {
+                    return chess == 1 ? player1.getUserId() : player2.getUserId();
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                continue;
+            }
+        }
+
+        // 4. 检查右对角线
+        for (int r = row - 4, c = col + 4; r <= row && c >= col; r++, c--) {
+            try {
+                if (board[r][c] == chess
+                        && board[r + 1][c - 1] == chess
+                        && board[r + 2][c - 2] == chess
+                        && board[r + 3][c - 3] == chess
+                        && board[r + 4][c - 4] == chess) {
+                    return chess == 1 ? player1.getUserId() : player2.getUserId();
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                continue;
+            }
+        }
+
+        // 胜负未分, 不考虑合棋, 就直接返回 0
         return 0;
     }
 

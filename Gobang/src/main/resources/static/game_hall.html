@@ -38,7 +38,8 @@
         });
 
         // 此处进行初始化 WebSocket, 并且实现前端的匹配逻辑
-        let webSocket = new WebSocket('ws://127.0.0.1:8080/findMatch'); // 此处的路径写作/findMatch, 千万不用写作/findMatch/
+        let websocketUrl = 'ws://' + location.host + '/findMatch';
+        let webSocket = new WebSocket(websocketUrl); // 此处的路径写作/findMatch, 千万不用写作/findMatch/
         webSocket.onopen = function () {
             console.log("onopen");
         }
@@ -77,10 +78,12 @@
                 // 匹配到对手
                 console.log("匹配到对手, 进入游戏房间!");
                 alert("即将进入游戏房间!");
-                location.assign("/game_room.html");
+                // location.assign("/game_room.html");
+                location.replace("/game_room.html");
             } else if (resp.message == 'repeatConnection') {
                 alert("检测到多开, 请用其他的账号登录!")
-                location.assign("/login.html");
+                // location.assign("/login.html");
+                location.replace("/login.html");
             } else {
                 console.log("接收到了非法响应! message: " + resp.reason);
             }
@@ -107,7 +110,8 @@
             } else {
                 // 链接异常
                 alert("链接异常, 请重新登录!");
-                location.assign('/login.html');
+                // location.assign('/login.html');
+                location.replace('/login.html');
             }
         }
     </script>

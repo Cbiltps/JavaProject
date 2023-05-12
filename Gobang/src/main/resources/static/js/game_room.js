@@ -17,7 +17,8 @@ function setScreenText(me) {
 }
 
 // 初始化 websocket(此处的路径写作 /game, 不要写作 /game/ )
-let websocket = new WebSocket("ws://127.0.0.1:8080/game");
+let websocketUrl = "ws://" + location.host + "/game";
+let websocket = new WebSocket(websocketUrl);
 websocket.onopen = function () {
     console.log("连接有房间成功!");
 }
@@ -113,7 +114,7 @@ function initGame() {
         websocket.onmessage = function (event) {
             let resp = JSON.parse(event.data);
             if (resp.message != 'putChess') {
-                console.log("响应类型错误!")
+                console.log(" !")
                 return;
             }
 
@@ -138,16 +139,26 @@ function initGame() {
             setScreenText(me);
 
             // 判定游戏是否结束
+            let screenDiv = document.querySelector('#screen');
             if (resp.winner != 0) {
                 if (resp.winner == gameInfo.thisUserId) {
-                    alert('你赢了');
+                    screenDiv.innerHTML = '你赢了!'
                 } else if (resp.winner == gameInfo.thatUserId) {
-                    alert('你输了');
+                    screenDiv.innerHTML = '你输了!'
+
                 } else {
                     alert("[winner]字段错误: " + resp.winner)
                 }
-                // 回到游戏大厅
-                location.assign('/game_hall.html');
+
+                // 增加一个按钮, 点击之后回到游戏大厅
+                let backButton = document.createElement('button');
+                backButton.innerHTML = '回到大厅';
+                backButton.onclick = function () {
+                    // location.assign('/game_hall.html');
+                    location.replace('/game_hall.html');
+                }
+                let fatherDiv = document.querySelector('.container>div');
+                fatherDiv.appendChild(backButton);
             }
         }
     }
@@ -184,10 +195,6 @@ function initGame() {
         if (chessBoard[row][col] == 0) {
             // 发送坐标给服务器, 服务器要返回结果
             sendRowAndCol(row, col);
-
-            // TODO 留到浏览器收到落子响应的时候再处理(收到响应再来画棋子)
-            // oneStep(col, row, gameInfo.isWhite);
-            // chessBoard[row][col] = 1;
         }
     }
 
@@ -202,4 +209,3 @@ function initGame() {
         websocket.send(JSON.stringify(request));
     }
 }
-

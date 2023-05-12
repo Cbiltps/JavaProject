@@ -187,7 +187,5 @@ public class MatchAPI extends TextWebSocketHandler {
 //            response.setReason("出现登录异常, 不能进行后续的匹配功能!");
 //            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
         }
-        User user = (User) session.getAttributes().get("user");
-        onlineUserManager.exitGameHall(user.getUserId());
     }
 }
