@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客详情页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_detail.css">
+
+    <!-- 引入 editor.md 的依赖 -->
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+
+    <!-- <script src="js/common.js"></script>
+    <script>getUserInfo('blog_detail.html');</script> -->
+</head>
+<body>
+    <!-- 这是导航栏 -->
+    <div class="nav">
+        <img src="image/logo2.jpg" alt="">
+        <span>我的博客系统</span>
+        <!-- 空白元素, 用来占位置 -->
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="logout">注销</a>
+    </div>
+    <!-- 这里的 .container 作为页面的版心 -->
+    <div class="container">
+        <!-- 左侧个人信息 -->
+        <div class="left">
+            <!-- 表示整个用户信息区域. -->
+            <div class="card">
+                <img src="image/doge.png" alt="">
+                <h3>比特汤老湿</h3>
+                <a href="#">github 地址</a>
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧内容详情 -->
+        <div class="right">
+            <!-- 使用这个 div 来包裹整个博客的内容详情 -->
+            <div class="blog-content">
+                <!-- 博客标题 -->
+                <h3></h3>
+                <!-- 博客的时间 -->
+                <div class="date"></div>
+                <!-- 博客的正文内容 -->
+                <div id="content"  style="opacity: 80%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getBlogDetail(body) {
+            $.ajax({
+                type: 'get',
+                // location.search 拿到了形如 '?blogId=5' 这样的一段内容
+                url: 'blog' + location.search,
+                // 根据 body 中的内容来构造页面
+                success: function(body) {
+                    // 1. 构造博客标题
+                    let h3 = document.querySelector(".blog-content>h3");
+                    h3.innerHTML = body.title;
+                    // 2. 构造博客发布时间
+                    let dateDiv = document.querySelector('.date');
+                    dateDiv.innerHTML = body.postTime;
+                    // 3. 构造博客正文
+                    // 如果直接把 content 设为 innerHTML, 此时展示在界面上的内容, 是原始的 markdown 字符串
+                    // 咱们需要的是渲染后的, 带有格式的效果
+                    // let contentDiv = document.querySelector('#content');
+                    // contentDiv.innerHTML = body.content;
+                    
+                    // 第一个参数对应 id=content 的 html 标签. 渲染后得到的 html 片段就会被放到这个标签下. 
+                    editormd.markdownToHTML('content', {
+                        markdown: body.content
+                    });
+                }
+            });
+        }
+        getBlogDetail();
+        
+        // 加上一个逻辑, 通过 GET /login 这个接口来获取下当前的登录状态~
+        // 注意下面的逻辑代码有点特殊, 就是把一个并行的逻辑实现为一个串行的逻辑:
+        // 并且注意, 如果实现的逻辑多了, 就会产生"回调地狱"!
+        function getUserInfo(pageName) {
+            $ .ajax({
+                type: "get",
+                url: "login",
+                success: function(body) {
+                    // 判定此处的 body 是不是一个有效的 user 对象(userId 是否非 0)
+                    if (body.userId && body.userId > 0) {
+                        // 登录成功!
+                        // 不做处理!
+                        console.log("当前用户登录成功! 用户名: " + body.username + " 用户ID:" + body.userId);
+                        
+                        // 根据当前用户登录的情况, 把当前用户名设置到页面上
+                        // if (pageName == 'blog_list.html') {
+                        //     changeUserName(body.username);
+                        // }
+
+                        // 在 getUserInfo 的回调函数中, 来调用获取作者信息
+                        getAuthorInfo(body);
+                    } else {
+                        // 登录失败!
+                        // 让前端页面, 跳转到 login.html
+                        alert("当前您尚未登录! 请登录后再访问博客列表!");
+                        location.assign('blog_login.html');
+                    }
+                },
+                error: function() {
+                    alert("当前您尚未登录! 请登录后再访问博客列表!");
+                    location.assign('blog_login.html');
+                }
+            });
+        }
+        getUserInfo('blog_detail.html');
+
+        // 从服务器获取当前博客的作者信息, 并显示到页面上
+        // 参数 user 就是刚才从服务器拿到的当前登录用户的信息
+        // 其中添加删除模块
+        function getAuthorInfo(user) {
+            $.ajax({
+                type: "get",
+                url: "authorInfo" + location.search,
+                success: function(body) {
+                    // 此处的 body 就是服务器返回的 User 对象, 就是文章的作者
+                    if (body.username) {
+                        // 如果响应中的 username 存在, 就把名字显示在左侧的页面上
+                        changeUserName(body.username);
+                        if (body.username == user.username) {
+                            // 作者和登录的用户是一个人, 则显示 "删除按钮"
+                            let navDiv = document.querySelector('.nav');
+                            let a = document.createElement('a');
+                            a.innerHTML = '删除';
+                            // 期望点击删除, 构造一个形如 blogDelete?blogId=6 这样的请求
+                            a.href = 'blogDelete' + location.search;
+                            navDiv.appendChild(a);
+                        }
+                    } else {
+                        console.log("获取作者信息失败!" + body.reason);
+                    }
+                }
+            });
+        }
+
+        function changeUserName(username) {
+            let h3 = document.querySelector('.card>h3');
+            h3.innerHTML = username;
+        }
+    </script>
+</body>
+</html>

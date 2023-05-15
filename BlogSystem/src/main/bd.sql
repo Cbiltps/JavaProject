@@ -1,6 +1,6 @@
 -- 编写建库建表的 sql
 
-create database if not exists blog_system;
+create database if not exists blog_system charset utf8mb4;
 
 use blog_system;
 
