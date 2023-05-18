@@ -6,7 +6,7 @@
         select * from user where username=#{username} and password=#{password};
     </select>
 
-    <select id="selectByName" resultType="com.example.onlinemusic.model.User">
+    <select id="selectUserByName" resultType="com.example.onlinemusic.model.User">
         select * from user where username=#{username};
     </select>
 
