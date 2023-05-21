@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.onlinemusic.mapper.MusicMapper">
+
+    <insert id="insert">
+        insert into music(title, singer, time, url, userid)
+        values (#{title}, #{singer}, #{time}, #{url}, #{userid});
+    </insert>
+
+    <select id="findMusic" resultType="com.example.onlinemusic.model.Music">
+        select * from music
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="title != null">
+                and title = #{title}
+            </if>
+            <if test="singer != null">
+                and singer = #{singer}
+            </if>
+        </where>
+    </select>
+
+</mapper>
