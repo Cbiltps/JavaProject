@@ -8,6 +8,7 @@ import com.example.onlinemusic.tools.ResponseBodyMessage;
 import org.apache.ibatis.binding.BindingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -85,7 +87,7 @@ public class MusicController {
         User user = (User) session.getAttribute(Constant.USERINFO_SESSION_KEY);
         int userid = user.getId();
         /**
-         * 获取url
+         * 获取url(此处没有文件的后缀, 播放音乐(需要地址)的时候需要添加其后缀!)
          *
          * 此处url的作用:
          * 因为要播放音乐, 所以发送的事http请求,
@@ -108,5 +110,29 @@ public class MusicController {
             destFile.delete();
             return new ResponseBodyMessage<>(-1, "上传至数据库失败!", false);
         }
+    }
+
+    @RequestMapping("/gettest")
+    public ResponseEntity<byte[]> getTest() {
+        byte[] a = {97, 98, 99, 100};
+//        return ResponseEntity.internalServerError().build();
+//        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(a);
+    }
+
+    @RequestMapping("/get")
+    public ResponseEntity<byte[]> getFileContent(String fileNameAndType) {
+        File file = new File(SAVE_PATH + "/" + fileNameAndType);
+        byte[] fileContent = null;
+        try {
+            fileContent = Files.readAllBytes(file.toPath());
+            if (fileContent == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }
