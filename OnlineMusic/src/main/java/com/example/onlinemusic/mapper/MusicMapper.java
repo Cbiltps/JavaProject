@@ -3,6 +3,8 @@ package com.example.onlinemusic.mapper;
 import com.example.onlinemusic.model.Music;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -26,4 +28,13 @@ public interface MusicMapper {
     Music findMusic(Integer id, String title, String singer);
 
     int deleteMusicById(int id);
+
+    /**
+     * 模糊查询
+     * @param musicName
+     * @return
+     */
+    List<Music> findMusicByName(String musicName);
+
+    List<Music> findAllMusic();
 }

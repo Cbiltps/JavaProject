@@ -9,7 +9,7 @@
     </insert>
 
     <delete id="deleteMusicById" parameterType="java.lang.Integer">
-        select * from music where id = #{id};
+        delete from music where id = #{id};
     </delete>
 
     <select id="findMusic" resultType="com.example.onlinemusic.model.Music">
@@ -25,6 +25,14 @@
                 and singer = #{singer}
             </if>
         </where>
+    </select>
+
+    <select id="findMusicByName" resultType="com.example.onlinemusic.model.Music">
+        select * from music where title like concat('%', #{musicName}, '%');
+    </select>
+
+    <select id="findAllMusic" resultType="com.example.onlinemusic.model.Music">
+        select * from music;
     </select>
 
 </mapper>
