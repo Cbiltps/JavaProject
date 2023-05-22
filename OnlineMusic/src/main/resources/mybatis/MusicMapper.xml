@@ -8,6 +8,10 @@
         values (#{title}, #{singer}, #{time}, #{url}, #{userid});
     </insert>
 
+    <delete id="deleteMusicById" parameterType="java.lang.Integer">
+        select * from music where id = #{id};
+    </delete>
+
     <select id="findMusic" resultType="com.example.onlinemusic.model.Music">
         select * from music
         <where>

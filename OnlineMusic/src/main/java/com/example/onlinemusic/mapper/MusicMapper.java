@@ -24,4 +24,6 @@ public interface MusicMapper {
     int insert(String title, String singer, String time, String url, int userid);
 
     Music findMusic(Integer id, String title, String singer);
+
+    int deleteMusicById(int id);
 }

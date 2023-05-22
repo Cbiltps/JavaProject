@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.ElementType;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -134,5 +135,32 @@ public class MusicController {
             e.printStackTrace();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @RequestMapping("/delete")
+    public ResponseBodyMessage<Boolean> deleteMusicById(@RequestParam String id) {
+        // 1. 检查音乐在数据库中是否存在
+        int musicId = Integer.parseInt(id);
+        Music music = musicMapper.findMusic(musicId, null, null);
+        // 2. 没找到既没有删除的音乐
+        if (music == null) {
+            return new ResponseBodyMessage<>(-1, "没有你要删除的音乐!", false);
+        }
+        // 3. 找到既删除音乐
+        int result = musicMapper.deleteMusicById(musicId);
+        if (1 == result) {
+            // 4. 同时删除服务器本地数据(前面上传的时候, 先存在本地然后存储到服务器)
+            int index = music.getUrl().lastIndexOf("=");
+            String fileName = music.getUrl().substring(index + 1);
+            File file = new File(SAVE_PATH + "/" + fileName);
+            System.out.println("当前文件路径" + file.toPath());
+            if (file.delete()) {
+                return new ResponseBodyMessage<>(0, "删除成功!", true);
+            } else {
+                return new ResponseBodyMessage<>(-1, "删除失败!", false);
+            }
+        } else {
+            return new ResponseBodyMessage<>(-1, "数据库中的音乐没有删除成功!", false);
+        }
     }
 }
