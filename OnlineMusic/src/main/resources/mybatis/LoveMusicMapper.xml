@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.onlinemusic.mapper.LoveMusicMapper">
+
+    <insert id="insertLoveMusic">
+        insert into lovemusic(userid, musicid) values(#{userid}, #{musicid});
+    </insert>
+
+    <select id="findLoveMusicByUserIdAndMusicId" resultType="com.example.onlinemusic.model.Music">
+        select * from lovemusic where userid=#{userid} and musicid=#{musicid};
+    </select>
+
+    <select id="findLoveMusicByUserId" resultType="com.example.onlinemusic.model.Music">
+        select * from lovemusic where userid=#{userid};
+    </select>
+
+    <select id="findLoveMusicByUserIdAndMusicName" resultType="com.example.onlinemusic.model.Music">
+        select * from lovemusic where userid=#{userid} and title like concat('%', #{musicname}, '%');
+    </select>
+
+</mapper>

@@ -31,10 +31,10 @@ public interface MusicMapper {
 
     /**
      * 模糊查询
-     * @param musicName
+     * @param musicname
      * @return
      */
-    List<Music> findMusicByName(String musicName);
+    List<Music> findMusicByName(String musicname);
 
     List<Music> findAllMusic();
 }

@@ -29,6 +29,6 @@ CREATE TABLE `music` (
 DROP TABLE IF EXISTS `lovemusic`;
 CREATE TABLE `lovemusic` (
     `id` int PRIMARY KEY AUTO_INCREMENT,
-    `user_id` int(11) NOT NULL,
-    `music_id` int(11) NOT NULL
+    `userid` int(11) NOT NULL,
+    `musicid` int(11) NOT NULL
 );

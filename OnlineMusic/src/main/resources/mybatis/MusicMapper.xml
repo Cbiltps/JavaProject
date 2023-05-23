@@ -28,7 +28,7 @@
     </select>
 
     <select id="findMusicByName" resultType="com.example.onlinemusic.model.Music">
-        select * from music where title like concat('%', #{musicName}, '%');
+        select * from music where title like concat('%', #{musicname}, '%');
     </select>
 
     <select id="findAllMusic" resultType="com.example.onlinemusic.model.Music">
