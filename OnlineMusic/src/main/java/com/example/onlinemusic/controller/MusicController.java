@@ -121,9 +121,14 @@ public class MusicController {
         return ResponseEntity.ok(a);
     }
 
+    /**
+     * 播放音乐
+     * @param filenameandtype
+     * @return
+     */
     @RequestMapping("/get")
-    public ResponseEntity<byte[]> getFileContent(String fileNameAndType) {
-        File file = new File(SAVE_PATH + "/" + fileNameAndType);
+    public ResponseEntity<byte[]> getFileContent(String filenameandtype) {
+        File file = new File(SAVE_PATH + "/" + filenameandtype);
         byte[] fileContent = null;
         try {
             fileContent = Files.readAllBytes(file.toPath());
