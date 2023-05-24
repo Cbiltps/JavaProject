@@ -44,4 +44,14 @@ public interface LoveMusicMapper {
      * @return
      */
     List<Music> findLoveMusicByUserIdAndMusicName(int userid, String musicname);
+
+    /**
+     * 取消收藏
+     * @param userid
+     * @param musicid
+     * @return
+     */
+    int deleteLoveMusic(int userid, int musicid);
+
+    int deleteLoveMusicByMusicId(int musicid);
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +26,14 @@ import javax.servlet.http.HttpSession;
 public class LoveMusicController {
 
     @Resource
-    LoveMusicMapper loveMusicMapper;
+    private LoveMusicMapper loveMusicMapper;
 
+    /**
+     * 收藏音乐
+     * @param musicid
+     * @param request
+     * @return
+     */
     @RequestMapping("/insertlovemusic")
     public ResponseBodyMessage<Boolean> insertlovemusic(@RequestParam String musicid, HttpServletRequest request) {
 
@@ -61,6 +68,57 @@ public class LoveMusicController {
 
     // TODO 添加取消收藏音乐功能
 
+    @RequestMapping("/findlovemusic")
+    public ResponseBodyMessage<List<Music>> findMusic(@RequestParam(required = false) String musicname ,HttpServletRequest request) {
+        // 登录效验
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute(Constant.USERINFO_SESSION_KEY) == null) {
+            System.out.println("没有登录!");
+            return new ResponseBodyMessage<>(-1, "请登录后查询!", null);
+        }
 
+        // 获取参数
+        User user = (User) session.getAttribute(Constant.USERINFO_SESSION_KEY);
+        int userId = user.getId();
 
+        // 查询相关数据
+        List<Music> musicList = null;
+        if (musicname == null) {
+            musicList = loveMusicMapper.findLoveMusicByUserId(userId);
+        } else {
+            musicList = loveMusicMapper.findLoveMusicByUserIdAndMusicName(userId, musicname);
+        }
+
+        // 返回结果
+        if (musicList.isEmpty()) {
+            return new ResponseBodyMessage<>(-1, "未获取到相关音乐!", null);
+        } else {
+            return new ResponseBodyMessage<>(0, "获取到相关音乐!", musicList);
+        }
+    }
+
+    @RequestMapping("/deletelovemusic")
+    public ResponseBodyMessage<Boolean> deleteLoveMusic(String musicid, HttpServletRequest request) {
+        // 登录效验
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute(Constant.USERINFO_SESSION_KEY) == null) {
+            System.out.println("没有登录!");
+            return new ResponseBodyMessage<>(-1, "请登录后查找!", false);
+        }
+
+        // 准备参数
+        User user = (User) session.getAttribute(Constant.USERINFO_SESSION_KEY);
+        int userId = user.getId();
+        int loveMusicIdOfTypeInt = Integer.parseInt(musicid);
+
+        // 删除
+        int result = loveMusicMapper.deleteLoveMusic(userId, loveMusicIdOfTypeInt);
+
+        // 返回结果
+        if (1 == result) {
+            return new ResponseBodyMessage<>(0, "取消收藏成功!", true);
+        } else {
+            return new ResponseBodyMessage<>(-1, "取消收藏失败!", false);
+        }
+    }
 }

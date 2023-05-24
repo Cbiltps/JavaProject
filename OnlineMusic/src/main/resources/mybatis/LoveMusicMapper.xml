@@ -7,16 +7,24 @@
         insert into lovemusic(userid, musicid) values(#{userid}, #{musicid});
     </insert>
 
+    <delete id="deleteLoveMusic">
+        delete from lovemusic where userid=#{userid} and musicid=#{musicid};
+    </delete>
+
+    <delete id="deleteLoveMusicByMusicId">
+        delete from lovemusic where musicid=#{musicid};
+    </delete>
+
     <select id="findLoveMusicByUserIdAndMusicId" resultType="com.example.onlinemusic.model.Music">
         select * from lovemusic where userid=#{userid} and musicid=#{musicid};
     </select>
 
     <select id="findLoveMusicByUserId" resultType="com.example.onlinemusic.model.Music">
-        select * from lovemusic where userid=#{userid};
+        select m.* from lovemusic lm,music m where lm.musicid = m.id and lm.userid=#{userid};
     </select>
 
     <select id="findLoveMusicByUserIdAndMusicName" resultType="com.example.onlinemusic.model.Music">
-        select * from lovemusic where userid=#{userid} and title like concat('%', #{musicname}, '%');
+        select m.* from lovemusic lm,music m where lm.musicid = m.id and lm.userid=#{userid} and title like concat('%', #{musicname}, '%');
     </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.onlinemusic.controller;
 
+import com.example.onlinemusic.mapper.LoveMusicMapper;
 import com.example.onlinemusic.mapper.MusicMapper;
 import com.example.onlinemusic.model.Music;
 import com.example.onlinemusic.model.User;
@@ -38,7 +39,10 @@ public class MusicController {
     private String SAVE_PATH;
 
     @Autowired
-    MusicMapper musicMapper;
+    private MusicMapper musicMapper;
+
+    @Autowired
+    private LoveMusicMapper loveMusicMapper;
 
     @RequestMapping("/upload")
     public ResponseBodyMessage<Boolean> insertMusic(@RequestParam String singer,
@@ -143,16 +147,16 @@ public class MusicController {
     }
 
     @RequestMapping("/delete")
-    public ResponseBodyMessage<Boolean> deleteMusicById(@RequestParam String id) {
+    public ResponseBodyMessage<Boolean> deleteMusicById(@RequestParam String musicid) {
         // 1. 检查音乐在数据库中是否存在
-        int musicId = Integer.parseInt(id);
-        Music music = musicMapper.findMusic(musicId, null, null);
+        int musicIdOfTypeInt = Integer.parseInt(musicid);
+        Music music = musicMapper.findMusic(musicIdOfTypeInt, null, null);
         // 2. 没找到既没有删除的音乐
         if (music == null) {
             return new ResponseBodyMessage<>(-1, "没有你要删除的音乐!", false);
         }
         // 3. 找到既删除音乐
-        int result = musicMapper.deleteMusicById(musicId);
+        int result = musicMapper.deleteMusicById(musicIdOfTypeInt);
         System.out.println(result);
         if (1 == result) {
             // 4. 同时删除服务器本地数据(前面上传的时候, 先存在本地然后存储到服务器)
@@ -161,6 +165,8 @@ public class MusicController {
             File file = new File(SAVE_PATH + "/" + fileName + ".mp3");
             System.out.println("当前文件路径: " + file.toPath());
             if (file.delete()) {
+                // 5. 同时删除lovemusic表中的歌曲
+                loveMusicMapper.deleteLoveMusicByMusicId(musicIdOfTypeInt);
                 return new ResponseBodyMessage<>(0, "删除成功!", true);
             } else {
                 return new ResponseBodyMessage<>(-1, "删除失败!", false);
@@ -180,14 +186,16 @@ public class MusicController {
         System.out.println("所有需要删除的id: " + ids);
         int count = 0;
         for (int i = 0; i < ids.size(); i++) {
+            // 准备资源-musicId
+            int musicId = ids.get(i);
             // 1. 检查音乐在数据库中是否存在
-            Music music = (Music) musicMapper.findMusic(ids.get(i), null, null);
+            Music music = musicMapper.findMusic(musicId, null, null);
             // 2. 没找到既没有删除的音乐
             if (music == null) {
                 return new ResponseBodyMessage<>(-1, "没有你要删除的音乐!", false);
             }
             // 3. 找到既删除音乐
-            int result = musicMapper.deleteMusicById(ids.get(i));
+            int result = musicMapper.deleteMusicById(musicId);
             if (1 == result) {
                 // 4. 同时删除服务器本地数据(前面上传的时候, 先存在本地然后存储到服务器)
                 int index = music.getUrl().lastIndexOf("=");
@@ -195,6 +203,8 @@ public class MusicController {
                 File file = new File(SAVE_PATH + "/" + fileName + ".mp3");
                 System.out.println("当前文件路径: " + file.toPath());
                 if (file.delete()) {
+                    // 5. 同时删除lovemusic表中的歌曲
+                    loveMusicMapper.deleteLoveMusicByMusicId(musicId);
                     count += result;
 //                    return new ResponseBodyMessage<>(0, "删除成功!", true);
                 } else {
@@ -214,11 +224,11 @@ public class MusicController {
     }
 
     @RequestMapping("/findmusic")
-    public ResponseBodyMessage<List<Music>> findMusic(@RequestParam(required = false) String musicName) {
+    public ResponseBodyMessage<List<Music>> findMusic(@RequestParam(required = false) String musicname) {
         List<Music> musicList = null;
-        if(musicName != null) {
+        if(musicname != null) {
             // 这是一个模糊查询
-            musicList = musicMapper.findMusicByName(musicName);
+            musicList = musicMapper.findMusicByName(musicname);
         }else {
             // 查询所有音乐
             musicList = musicMapper.findAllMusic();
