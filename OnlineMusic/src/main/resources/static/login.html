@@ -23,7 +23,22 @@
 		}
 	</style>
 	<script>
+		$(document).ready(function () {
+			$("#submit").click(function () {
+				let username = $("#user").val();
+				let password = $("#password").val();
+				if (username.trim() == "" || password.trim() == "") {
+					alert("用户名或者密码不能为空!");
+					return;
+				}
 
+				$.ajax({
+					url: "",
+					type: "",
+
+				});
+			})
+		});
 	</script>
 </head>
 
@@ -41,7 +56,7 @@
 			<input type="password" name="password" class="form-control" id="password" placeholder="请输入密码" />
 		</div>
 
-		<hr />
+		<hr/>
 		<div class="form-group" style="text-align: center;"><!--class="form-group"-->
 			<input style="width: 200px;height: 40px" id="submit" class="btn btn btn-primary" type="button" value="登录">
 		</div>
@@ -51,7 +66,7 @@
 			<button type="button" class="close" data-dismiss="alert">
 				<span>&times;</span>
 			</button>
-			<strong id="message">您尚未进行登录，请您登录!</strong>
+			<strong id="message">您尚未进行登录, 请您登录!</strong>
 		</div>
 	</div>
 </body>
