@@ -34,7 +34,14 @@
         </style>
 
         <script type="text/javascript">
-            <!-- 核心代码实现 -->
+            $(document).ready(function () {
+               load();
+            });
+
+            // 此处可以传参, 可以不传参
+            function load(musicname) {
+
+            }
         </script>
     </head>
 
@@ -68,7 +75,20 @@
                     <th>歌曲</th>
                     <th>操作</th>
                 </tr>
-                <tbody id="info" valign="middle"></tbody>
+
+                <tr>
+                    <th> <input id="1" type="checkbox"> </th>
+                    <td>成都</td>
+                    <td>赵雷</td>
+                    <td><button class="btn btn-primary" onclick="playerSong('+musicUrl+')">播放歌曲</button></td>
+                    <td><button class="btn btn-primary" onclick="deleteInfo('+musicUrl+')">删除</button>
+                        <button class="btn btn-primary" onclick="loveInfo('+musicUrl+')">喜欢</button>
+                    </td>
+                </tr>
+
+                <tbody id="info" valign="middle">
+
+                </tbody>
             </table>
         </div>
     </body>

@@ -35,8 +35,26 @@
                     }
 
                     $.ajax({
-                        url: '',
-                        type: '',
+                        url: '/user/login',
+                        type: 'post',
+                        data: {
+                            'username': username,
+                            'password': password
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            if (data.status == 0) {
+                                alert("登录成功!");
+                                // 跳转到指定页面
+                                window.location.href = 'list.html';
+                            } else {
+                                alert('登录失败, 用户名或密码错误!');
+                                $('#message').text('账号或密码错误, 请重试!');
+                                $('user').val('');
+                                $('password').val('');
+                            }
+                        }
                     });
                 });
             });
