@@ -10,12 +10,12 @@
 
     <body>
         <!--enctype="multipart/form-data"-->
-        <form method="  " enctype="multipart/form-data" action=" ">
-            文件上传：
+        <form method="post" enctype="multipart/form-data" action="/music/upload">
+            文件上传:
             <input type="file" name="filename" />
             歌手名:
             <label>
-                <input type="text" name="singer" placeholder="请输入歌手名" />
+                <input type="text" name="singer" placeholder="请输入歌手名..." />
             </label>
             <input type="submit" value="上传" />
         </form>

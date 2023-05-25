@@ -10,11 +10,11 @@
  **/
 new (function (settings) {
     // Various Settings
-    var $separator = settings.separator || '&';
+    var $separator = settings.separator || "&";
     var $spaces = settings.spaces === false ? false : true;
-    var $suffix = settings.suffix === false ? '' : '[]';
+    var $suffix = settings.suffix === false ? "" : "[]";
     var $prefix = settings.prefix === false ? false : true;
-    var $hash = $prefix ? (settings.hash === true ? '#' : '?') : '';
+    var $hash = $prefix ? (settings.hash === true ? "#" : "?") : "";
     var $numbers = settings.numbers === false ? false : true;
 
     jQuery.query = new (function () {
@@ -33,16 +33,15 @@ new (function (settings) {
         var set = function (target, tokens, value) {
             var o,
                 token = tokens.shift();
-            if (typeof target != 'object') target = null;
-            if (token === '') {
+            if (typeof target != "object") target = null;
+            if (token === "") {
                 if (!target) target = [];
                 if (is(target, Array)) {
                     target.push(tokens.length == 0 ? value : set(null, tokens.slice(0), value));
                 } else if (is(target, Object)) {
                     var i = 0;
                     while (target[i++] != null);
-                    target[--i] =
-                        tokens.length == 0 ? value : set(target[i], tokens.slice(0), value);
+                    target[--i] = tokens.length == 0 ? value : set(target[i], tokens.slice(0), value);
                 } else {
                     target = [];
                     target.push(tokens.length == 0 ? value : set(null, tokens.slice(0), value));
@@ -50,10 +49,9 @@ new (function (settings) {
             } else if (token && token.match(/^\s*[0-9]+\s*$/)) {
                 var index = parseInt(token, 10);
                 if (!target) target = [];
-                target[index] =
-                    tokens.length == 0 ? value : set(target[index], tokens.slice(0), value);
+                target[index] = tokens.length == 0 ? value : set(target[index], tokens.slice(0), value);
             } else if (token) {
-                var index = token.replace(/^\s*|\s*$/g, '');
+                var index = token.replace(/^\s*|\s*$/g, "");
                 if (!target) target = {};
                 if (is(target, Array)) {
                     var temp = {};
@@ -62,8 +60,7 @@ new (function (settings) {
                     }
                     target = temp;
                 }
-                target[index] =
-                    tokens.length == 0 ? value : set(target[index], tokens.slice(0), value);
+                target[index] = tokens.length == 0 ? value : set(target[index], tokens.slice(0), value);
             } else {
                 return value;
             }
@@ -80,14 +77,14 @@ new (function (settings) {
                 });
             } else {
                 jQuery.each(arguments, function () {
-                    var q = '' + this;
-                    q = q.replace(/^[?#]/, ''); // remove any leading ? || #
-                    q = q.replace(/[;&]$/, ''); // remove any trailing & || ;
-                    if ($spaces) q = q.replace(/[+]/g, ' '); // replace +'s with spaces
+                    var q = "" + this;
+                    q = q.replace(/^[?#]/, ""); // remove any leading ? || #
+                    q = q.replace(/[;&]$/, ""); // remove any trailing & || ;
+                    if ($spaces) q = q.replace(/[+]/g, " "); // replace +'s with spaces
 
                     jQuery.each(q.split(/[&;]/), function () {
-                        var key = decodeURIComponent(this.split('=')[0] || '');
-                        var val = decodeURIComponent(this.split('=')[1] || '');
+                        var key = decodeURIComponent(this.split("=")[0] || "");
+                        var val = decodeURIComponent(this.split("=")[1] || "");
 
                         if (!key) return;
 
@@ -102,7 +99,7 @@ new (function (settings) {
 
                         val = !val && val !== 0 ? true : val;
 
-                        if (val !== false && val !== true && typeof val != 'number') val = val;
+                        if (val !== false && val !== true && typeof val != "number") val = val;
 
                         self.SET(key, val);
                     });
@@ -126,7 +123,7 @@ new (function (settings) {
                 while (target != null && tokens.length != 0) {
                     target = target[tokens.shift()];
                 }
-                return typeof target == 'number' ? target : target || '';
+                return typeof target == "number" ? target : target || "";
             },
             get: function (key) {
                 var target = this.GET(key);
@@ -160,11 +157,11 @@ new (function (settings) {
                 return self;
             },
             load: function (url) {
-                var hash = url.replace(/^.*?[#](.+?)(?:\?.+)?$/, '$1');
-                var search = url.replace(/^.*?[?](.+?)(?:#.+)?$/, '$1');
+                var hash = url.replace(/^.*?[#](.+?)(?:\?.+)?$/, "$1");
+                var search = url.replace(/^.*?[?](.+?)(?:#.+)?$/, "$1");
                 return new queryObject(
-                    url.length == search.length ? '' : search,
-                    url.length == hash.length ? '' : hash
+                    url.length == search.length ? "" : search,
+                    url.length == hash.length ? "" : hash
                 );
             },
             empty: function () {
@@ -175,8 +172,8 @@ new (function (settings) {
             },
             COMPACT: function () {
                 function build(orig) {
-                    var obj = typeof orig == 'object' ? (is(orig, Array) ? [] : {}) : orig;
-                    if (typeof orig == 'object') {
+                    var obj = typeof orig == "object" ? (is(orig, Array) ? [] : {}) : orig;
+                    if (typeof orig == "object") {
                         function add(o, key, value) {
                             if (is(o, Array)) o.push(value);
                             else o[key] = value;
@@ -200,27 +197,25 @@ new (function (settings) {
                     chunks = [],
                     self = this;
                 var encode = function (str) {
-                    str = str + '';
-                    if ($spaces) str = str.replace(/ /g, '+');
+                    str = str + "";
+                    if ($spaces) str = str.replace(/ /g, "+");
                     return encodeURIComponent(str);
                 };
                 var addFields = function (arr, key, value) {
                     if (!is(value) || value === false) return;
                     var o = [encode(key)];
                     if (value !== true) {
-                        o.push('=');
+                        o.push("=");
                         o.push(encode(value));
                     }
-                    arr.push(o.join(''));
+                    arr.push(o.join(""));
                 };
                 var build = function (obj, base) {
                     var newKey = function (key) {
-                        return !base || base == ''
-                            ? [key].join('')
-                            : [base, '[', key, ']'].join('');
+                        return !base || base == "" ? [key].join("") : [base, "[", key, "]"].join("");
                     };
                     jQuery.each(obj, function (key, value) {
-                        if (typeof value == 'object') build(value, newKey(key));
+                        if (typeof value == "object") build(value, newKey(key));
                         else addFields(chunks, newKey(key), value);
                     });
                 };
@@ -230,7 +225,7 @@ new (function (settings) {
                 if (chunks.length > 0) queryString.push($hash);
                 queryString.push(chunks.join($separator));
 
-                return queryString.join('');
+                return queryString.join("");
             },
         };
 
