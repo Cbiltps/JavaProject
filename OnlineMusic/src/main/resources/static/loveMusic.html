@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- 网页使用的语言 -->
 <html lang="zh-CN">
+
 <head>
     <!-- 指定字符集 -->
     <meta charset="utf-8">
@@ -11,7 +12,8 @@
     initial-scale: 初始的缩放比，为1:1 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <title>在线音乐服务器实现</title>
 
@@ -24,56 +26,58 @@
     <!-- 3. 导入bootstrap的js文件 -->
     <!-- <script src="js/bootstrap.min.js"></script>-->
     <style type="text/css">
-        td, th {
+        td,
+        th {
             text-align: center;
         }
     </style>
     <script>
-        
+
     </script>
 </head>
-<body>
-<div class="container">
-    <h3 style="text-align: center">我喜欢的音乐列表</h3>
-    <div style="float: left;">
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="exampleInputName2">歌曲名</label>
-                <input name="name" type="text" class="form-control" id="exampleInputName2" >
-            </div>
-            <button id="submit1" type="button" class="btn btn-default">查询</button>
-        </form>
-    </div>
-    <div style="float: right;margin-bottom: 15px">
-        <a class="btn btn-primary" href="list.html">回到首页</a>
-    </div>
-    <table border="1" class="table table-bordered table-hover">
-        <tr class="success">
-            <th>歌名</th>
-            <th>歌手</th>
-            <th>歌曲</th>
-            <th>操作</th>
-        </tr>
-        <tbody id="info" valign="middle">
-		
-		<tr>
-            <td>成都</td>
-            <td>赵雷</td>
-            <td><button class="btn btn-primary" onclick="playerSong('+musicUrl+')">播放歌曲</button></td>
-            <td><button class="btn btn-primary" onclick="deleteInfo('+musicUrl+')">删除</button></td>
-        </tr>
 
-        <tr>
-            <td>成都</td>
-            <td>赵雷</td>
-            <td><button class="btn btn-primary" onclick="playerSong('+musicUrl+')">播放歌曲</button></td>
-            <td><button class="btn btn-primary" onclick="deleteInfo('+musicUrl+')">删除</button></td>
-        </tr>
-		
-		
-        </tbody>
-    </table>
-</div>
+<body>
+    <div class="container">
+        <h3 style="text-align: center">我喜欢的音乐列表</h3>
+        <div style="float: left;">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="exampleInputName2">歌曲名</label>
+                    <input name="name" type="text" class="form-control" id="exampleInputName2">
+                </div>
+                <button id="submit1" type="button" class="btn btn-default">查询</button>
+            </form>
+        </div>
+        <div style="float: right;margin-bottom: 15px">
+            <a class="btn btn-primary" href="list.html">回到首页</a>
+        </div>
+        <table border="1" class="table table-bordered table-hover">
+            <tr class="success">
+                <th>歌名</th>
+                <th>歌手</th>
+                <th>歌曲</th>
+                <th>操作</th>
+            </tr>
+            <tbody id="info" valign="middle">
+
+                <tr>
+                    <td>成都</td>
+                    <td>赵雷</td>
+                    <td><button class="btn btn-primary" onclick="playerSong('+musicUrl+')">播放歌曲</button></td>
+                    <td><button class="btn btn-primary" onclick="deleteInfo('+musicUrl+')">删除</button></td>
+                </tr>
+
+                <tr>
+                    <td>成都</td>
+                    <td>赵雷</td>
+                    <td><button class="btn btn-primary" onclick="playerSong('+musicUrl+')">播放歌曲</button></td>
+                    <td><button class="btn btn-primary" onclick="deleteInfo('+musicUrl+')">删除</button></td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
