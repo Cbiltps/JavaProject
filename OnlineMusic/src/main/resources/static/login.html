@@ -17,17 +17,13 @@
         <script src="js/jquery-3.1.1.min.js"></script>
         <!-- 3. 导入bootstrap的js文件 -->
         <!-- <script src="js/bootstrap.min.js"></script> -->
-        
-        <script type="text/javascript"></script>
-        
+
         <style>
             #body {
                 background-image: url("images/background.png");
-                /*background-size:100% 100%;
-			background-attachment: fixed;*/
             }
         </style>
-        
+
         <script>
             $(document).ready(function () {
                 $("#submit").click(function () {
@@ -53,10 +49,9 @@
                                 // 跳转到指定页面
                                 window.location.href = "list.html";
                             } else {
-                                alert("登录失败, 用户名或密码错误!");
-                                $("#message").text("账号或密码错误, 请重试!");
-                                $("user").val("");
-                                $("password").val("");
+                                alert("账号或密码错误, 请重试!");
+                                $("#user").val("");
+                                $("#password").val("");
                             }
                         },
                     });
@@ -66,22 +61,21 @@
     </head>
 
     <body id="body">
-        <div class="container" style="width: 400px; margin-top: 110px; background-color: rgba(255, 255, 255, 0.8)">
+        <div
+            class="container"
+            style="width: 400px; margin-top: 110px; background-color: rgba(255, 255, 255, 0.8); border-radius: 4px"
+        >
             <h3 style="text-align: center">管理员登录</h3>
-            <!--		        <form action="login" method="post">-->
             <div class="form-group">
                 <label for="user">用户名: </label>
-                <input type="text" name="username" class="form-control" id="user" placeholder="请输入用户名" />
+                <input type="text" name="username" class="form-control" id="user" placeholder="请输入用户名..." />
             </div>
-
             <div class="form-group">
                 <label for="password">密码: </label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码" />
+                <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码..." />
             </div>
-
-            <hr />
+            <hr>
             <div class="form-group" style="text-align: center">
-                <!--class="form-group"-->
                 <input
                     style="width: 200px; height: 40px"
                     id="submit"
@@ -89,14 +83,6 @@
                     type="button"
                     value="登录"
                 />
-            </div>
-            <!--	  	</form>-->
-            <!-- 出错显示的信息框 -->
-            <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert">
-                    <span>&times;</span>
-                </button>
-                <strong id="message">您尚未进行登录, 请您登录!</strong>
             </div>
         </div>
     </body>
