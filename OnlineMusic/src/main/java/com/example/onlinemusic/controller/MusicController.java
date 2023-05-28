@@ -186,7 +186,7 @@ public class MusicController {
      * @return
      */
     @RequestMapping("/deleteselectedmusic")
-    public ResponseBodyMessage<Boolean> deleteSelectedMusic(@RequestParam List<Integer> ids) {
+    public ResponseBodyMessage<Boolean> deleteSelectedMusic(@RequestParam("ids[]") List<Integer> ids) {
         System.out.println("所有需要删除的id: " + ids);
         int count = 0;
         for (int i = 0; i < ids.size(); i++) {

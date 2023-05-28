@@ -42,9 +42,9 @@
                             password: password,
                         },
                         dataType: "json",
-                        success: function (data) {
-                            console.log(data);
-                            if (data.status == 0) {
+                        success: function (response) {
+                            console.log(response);
+                            if (response.status == 0) {
                                 alert("登录成功!");
                                 // 跳转到指定页面
                                 window.location.href = "list.html";

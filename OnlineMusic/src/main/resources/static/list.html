@@ -29,7 +29,7 @@
                 load();
             });
 
-            // 此处可以传参, 可以不传参
+            // 初次页面的加载(此处可以传参, 可以不传参)
             function load(musicname) {
                 $.ajax({
                     url: "/music/findmusic",
@@ -53,7 +53,8 @@
                             labelString += '<td> <button class="btn btn-primary" onclick="deleteInfo(' + data[i].id + ')"> 删除 </button>' + '<button class = "btn btn-primary" onclick="loveInfo(' + data[i].id + ')"> 喜欢 </button>' + '';
                             labelString += '</tr>';
                         }
-                        $("#info").html(labelString);
+
+                        $("#info").html(labelString); // 在页面上插入标签元素
                     },
                 });
             }
@@ -72,15 +73,82 @@
                 SewisePlayer.toPlay(musicInfo, musicName, startTime, true); // true: 自动播放
             }
 
-            function deleteInfo() {
-
+            /**
+             * 删除音乐
+             * @param musicid
+             */
+            function deleteInfo(musicid) {
+                console.log(musicid);
+                $.ajax({
+                    url: "/music/delete",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        musicid: musicid
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if (response.data == true) {
+                            // 删除成功
+                            alert("删除成功, 重新加载页面!")
+                            window.location.href = "list.html";
+                        } else {
+                            alert("删除失败!")
+                        }
+                    }
+                });
             }
+
+            $(document).ready(function () {
+                /**
+                 * 查询(支持模糊查询)
+                 */
+                $("#submit").click(function () {
+                    let musicName = $("#exampleInputName").val();
+                    load(musicName);
+                });
+
+                /**
+                 * 完成批量删除(删除选中项)
+                 */
+                $.when(load).done(function () {
+                    $("#delete").click(function () {
+                        let ids = new Array();
+                        let index = 0; // 数组的下标
+                        $("input:checkbox").each(function () {
+                            if ($(this).is(":checked")) {
+                                ids[index] = $(this).attr("id");
+                                index++;
+                            }
+                        });
+                        console.log(ids);
+
+                        // 发送请求
+                        $.ajax({
+                            url: "/music/deleteselectedmusic",
+                            type: "post",
+                            data: {
+                                ids: ids
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.data == true) {
+                                    alert("删除成功!");
+                                    window.location.href = "list.html";
+                                } else {
+                                    alert("删除失败!");
+                                }
+                            }
+                        });
+                    });
+                });
+            });
         </script>
     </head>
 
     <body>
         <div class="container">
-            <h3 style="text-align: center">在线音乐服务器实现</h3>
+            <h3 style="text-align: center">在线音乐服务器</h3>
             <div style="float: left">
                 <form class="form-inline">
                     <div class="form-group">
@@ -131,7 +199,12 @@
                 videourl: "http://jackzhang1204.github.io/materials/where_did_time_go.mp3",
                 // 播放器皮肤
                 skin: "vodWhite",
-                // false: 打开页面关闭自动播放
+                /**
+                 * false: 打开页面关闭自动播放
+                 *
+                 * 为什么要设置成 false ?
+                 * https://www.jianshu.com/p/b360bc4793e5
+                 */
                 autostart:"false"
             });
         </script>
