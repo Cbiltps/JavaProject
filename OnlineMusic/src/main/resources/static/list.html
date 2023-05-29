@@ -99,6 +99,32 @@
                 });
             }
 
+            /**
+             * 收藏音乐
+             * @param musicid
+             */
+            function loveInfo(musicid) {
+                console.log(musicid);
+                $.ajax({
+                    url: "/lovemusic/insertlovemusic",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        musicid: musicid
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if (response.data == true) {
+                            // 删除成功
+                            alert("收藏成功!")
+                            window.location.href = "list.html";
+                        } else {
+                            alert("收藏失败!")
+                        }
+                    }
+                });
+            }
+
             $(document).ready(function () {
                 /**
                  * 查询(支持模糊查询)

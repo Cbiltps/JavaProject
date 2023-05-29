@@ -66,8 +66,6 @@ public class LoveMusicController {
         }
     }
 
-    // TODO 添加取消收藏音乐功能
-
     @RequestMapping("/findlovemusic")
     public ResponseBodyMessage<List<Music>> findMusic(@RequestParam(required = false) String musicname ,HttpServletRequest request) {
         // 登录效验

@@ -19,14 +19,95 @@
         <!-- 3. 导入bootstrap的js文件 -->
         <!-- <script src="js/bootstrap.min.js"></script>-->
 
-        <style type="text/css">
+        <style>
             td, th {
                 text-align: center;
             }
         </style>
 
         <script>
+            $(document).ready(function () {
+                load();
+            });
 
+            // 初次页面的加载(此处可以传参, 可以不传参)
+            function load(musicname) {
+                $.ajax({
+                    url: "/lovemusic/findlovemusic",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        musicname: musicname,
+                    },
+                    success: function (object) {
+                        console.log(object);
+                        let labelString = ''; // 用于标签拼接的字符串
+                        let data = object.data; // 把接收到的数据放进一个数组
+                        for (let i = 0; i < data.length; i++) {
+                            let musicUrl = data[i].url + ".mp3";
+                            console.log(musicUrl);
+                            labelString += '<tr>';
+                            labelString += '<td>' + data[i].title + '</td>';
+                            labelString += '<td>' + data[i].singer + '</td>';
+                            labelString += '<td> <button class="btn btn-primary" onclick="playerSong(\' ' + musicUrl + ' \')"> 播放歌曲 </button>' + '</td>';
+                            labelString += '<td> <button class="btn btn-primary" onclick="deleteInfo(' + data[i].id + ')"> 移除 </button>' + '</td>';
+                            labelString += '</tr>';
+                        }
+
+                        $("#info").html(labelString); // 在页面上插入标签元素
+                    },
+                });
+            }
+
+            /**
+             * 播放音乐
+             * @param musicInfo 播放音乐地址
+             */
+            function playerSong(musicInfo) {
+                console.log(musicInfo);
+                // 播放音乐名
+                let musicName = musicInfo.substring(musicInfo.lastIndexOf("=") + 1);
+                // 播放开始时间
+                let startTime = 0;
+                // 注意: SewisePlayer.toPlay 会发送为 /music/get?path=Wenasa雯雯呗 - 放下 粤语版.mp3 的一个 http 请求!!!
+                SewisePlayer.toPlay(musicInfo, musicName, startTime, true); // true: 自动播放
+            }
+
+            /**
+             * 删除音乐
+             * @param musicid
+             */
+            function deleteInfo(musicid) {
+                console.log(musicid);
+                $.ajax({
+                    url: "/lovemusic/deletelovemusic",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        musicid: musicid
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if (response.data == true) {
+                            // 删除成功
+                            alert("移除成功, 重新加载页面!")
+                            window.location.href = "lovemusic.html";
+                        } else {
+                            alert("移除失败!")
+                        }
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                /**
+                 * 查询(支持模糊查询)
+                 */
+                $("#submit").click(function () {
+                    let musicName = $("#exampleInputName").val();
+                    load(musicName);
+                });
+            });
         </script>
     </head>
 
@@ -39,7 +120,7 @@
                         <label for="exampleInputName">歌曲名</label>
                         <input name="name" type="text" class="form-control" id="exampleInputName" />
                     </div>
-                    <button id="submit1" type="button" class="btn btn-default">查询</button>
+                    <button id="submit" type="button" class="btn btn-default">查询</button>
                 </form>
             </div>
             <div style="float: right; margin-bottom: 15px">
@@ -54,17 +135,40 @@
                 </tr>
                 <tbody id="info">
                     <tr>
-                        <td>成都</td>
-                        <td>赵雷</td>
+                        <td>xxx</td>
+                        <td>xxx</td>
                         <td>
-                            <button class="btn btn-primary" onclick="playerSong(' + musicUrl + ')">播放歌曲</button>
+                            <button class="btn btn-primary" onclick="playerSong(' + musicUrl + ')"> 播放歌曲 </button>
                         </td>
                         <td>
-                            <button class="btn btn-primary" onclick="deleteInfo(' + musicUrl + ')">删除</button>
+                            <button class="btn btn-primary" onclick="deleteInfo(' + musicUrl + ')"> 移除 </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </body>
+
+    <div style="width: 180px; height: 140px; position:absolute; bottom:10px; right:10px">
+        <script type="text/javascript" src="player/sewise.player.min.js"></script>
+        <script type="text/javascript">
+            SewisePlayer.setup({
+                // 点播播放
+                server: "vod",
+                // 播放类型
+                type: "mp3",
+                // 点击播放会播放此地址音乐(默认设置)
+                videourl: "http://jackzhang1204.github.io/materials/where_did_time_go.mp3",
+                // 播放器皮肤
+                skin: "vodWhite",
+                /**
+                 * false: 打开页面关闭自动播放
+                 *
+                 * 为什么要设置成 false ?
+                 * https://www.jianshu.com/p/b360bc4793e5
+                 */
+                autostart:"false"
+            });
+        </script>
+    </div>
 </html>
