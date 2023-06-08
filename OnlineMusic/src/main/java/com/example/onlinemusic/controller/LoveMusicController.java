@@ -87,12 +87,7 @@ public class LoveMusicController {
             musicList = loveMusicMapper.findLoveMusicByUserIdAndMusicName(userId, musicname);
         }
 
-        // 返回结果
-        if (musicList.isEmpty()) {
-            return new ResponseBodyMessage<>(-1, "未获取到相关音乐!", null);
-        } else {
-            return new ResponseBodyMessage<>(0, "获取到相关音乐!", musicList);
-        }
+        return new ResponseBodyMessage<>(0, "获取到相关音乐!", musicList);
     }
 
     @RequestMapping("/deletelovemusic")

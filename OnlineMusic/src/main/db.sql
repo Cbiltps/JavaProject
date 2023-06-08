@@ -11,7 +11,7 @@ CREATE TABLE `user` (
 );
 
 INSERT INTO user(username, password)
-VALUES("bit", "$2a$10$Bs4wNEkledVlGZa6wSfX7eCSD7wRMO0eUwkJH0WyhXzKQJrnk85li");
+VALUES("lisi", "$2a$10$Bs4wNEkledVlGZa6wSfX7eCSD7wRMO0eUwkJH0WyhXzKQJrnk85li");
 
 INSERT INTO user(username, password)
 VALUES("zhangsan", "123");
